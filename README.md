@@ -11,7 +11,7 @@ hardware:
 2x 200mm http://www.spectrasymbol.com/potentiometer/magnetopots
 
 Project steps:
- - assemble SDcard shield <<-- WE'RE HERE !
+ - assemble SDcard shield <<-- *WE'RE HERE !*
  - init realtime clock dialog
  - output realtime-clock column in csv file @ 400hz
  - connect to mma8452 through i2c

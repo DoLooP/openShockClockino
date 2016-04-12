@@ -10,16 +10,16 @@ hardware:
 1x 10Dof IMU based on lsm303
 2x 200mm http://www.spectrasymbol.com/potentiometer/magnetopots
 
-project step:
-assemble SDcard shield
-init realtime clock dialog
-output realtime-clock column in csv file @ 400hz
-connect to mma8452 through i2c
-clock;mma8452 >> csv file @ 400hz
-Add a lsm303 on i2c
-clock;mma8452;lsm303 >> csv file @ 400hz
-add a spectraSymbol
-adds all other sensors
+Project steps:
+ - assemble SDcard shield <<-- WE'RE HERE !
+ - init realtime clock dialog
+ - output realtime-clock column in csv file @ 400hz
+ - connect to mma8452 through i2c
+ - clock;mma8452 >> csv file @ 400hz
+ - Add a lsm303 on i2c
+ - clock;mma8452;lsm303 >> csv file @ 400hz
+ - add a spectraSymbol
+ - adds all other sensors
 ...
 
 project goal

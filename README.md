@@ -21,6 +21,7 @@ Project steps:
  - add a spectraSymbol
  - adds all other sensors
 ...
+Maybe we'll hit i2c bandwidth limitation before interfacing 4 digitals sensors. In this case we'll use some kind of SDI to i2c switch.
 
 project goals:
 Output data file as jsonP scripts + index.htm (=>record list)

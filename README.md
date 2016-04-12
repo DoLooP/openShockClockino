@@ -22,11 +22,11 @@ Project steps:
  - adds all other sensors
 ...
 
-project goal
-output data file as jsonP scripts + index.htm
-data file are loaded by a local javascript engine (stored in the sdcard)
- - exported as calc-sheets
- - displayed as JSchart
+project goals:
+Output data file as jsonP scripts + index.htm (=>record list)
+jsonP files are then loaded by a javascript engine (localy stored in the sdcard) in order to:
+ - export as calc-sheets
+ - display as JSchart
  - measure shock displacement coverage
  - detect bottoming
  - detect traction lose

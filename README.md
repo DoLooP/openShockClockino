@@ -2,13 +2,13 @@
 arduino uno datalogger project to measure shock metrics while ridding
 
 hardware:
-1x usb power battery
-1x arduino uno R2
-1x adafruit shield SDcard
-2x mma8452 accelerometer
-1x lsm303 accelerometer + compass
-1x 10Dof IMU based on lsm303
-2x 200mm http://www.spectrasymbol.com/potentiometer/magnetopots
+ - 1x usb power battery
+ - 1x arduino uno R2
+ - 1x adafruit shield SDcard
+ - 2x mma8452 accelerometer
+ - 1x lsm303 accelerometer + compass
+ - 1x 10Dof IMU based on lsm303
+ - 2x 200mm http://www.spectrasymbol.com/potentiometer/magnetopots
 
 Project steps:
  - assemble SDcard shield <<-- *WE'RE HERE !*

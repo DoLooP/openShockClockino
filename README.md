@@ -11,10 +11,12 @@ hardware:
  - 2x 200mm http://www.spectrasymbol.com/potentiometer/magnetopots
 
 Project steps:
- - assemble SDcard shield <<-- *WE'RE HERE !*
+ - connect to mma8452 through i2c /step1 DONE/
+ - connect/sample dual mma8452 through i2c /step2 DONE/ ( max sample rate: 340Hz :/ )
+ - improve sampling rate (verify i2c clock, read MMA8452 lib) <<-- *next step*
+ - assemble SDcard shield
  - init realtime clock dialog
  - output realtime-clock column in csv file @ 400hz
- - connect to mma8452 through i2c
  - clock;mma8452 >> csv file @ 400hz
  - Add a lsm303 on i2c
  - clock;mma8452;lsm303 >> csv file @ 400hz

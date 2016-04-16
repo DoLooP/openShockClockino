@@ -71,6 +71,10 @@ void setup()
   accel2.init(SCALE_8G);
   Serial.println("Dual MMA8452Q init done.");
 
+  // TWBR change i2c frequency according to WIRE library documentation
+  // TWBR = 12; // #define TWI_FREQ 400000L
+  TWBR = 2; // #define TWI_FREQ 800000L
+
   lastMillis = millis(); // to print a debug msg every N ms.
   duration = 0;
   loopCount = 0;

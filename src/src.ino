@@ -71,6 +71,8 @@ void setup()
   accel2.init(SCALE_8G,ODR_400);
   Serial.println("Dual MMA8452Q init done.");
 
+  sdcardSetup();
+
   // TWBR change i2c frequency according to WIRE library documentation
   TWBR = 12; // #define TWI_FREQ 400000L
   // TWBR = 2; // #define TWI_FREQ 800000L

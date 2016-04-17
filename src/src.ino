@@ -32,6 +32,9 @@ Distributed as-is; no warranty is given.
 ******************************************************************************/
 #include <Wire.h> // Must include Wire library for I2C
 #include <SparkFun_MMA8452Q.h> // Includes the SFE_MMA8452Q library
+// include the SD library:
+#include <SPI.h>
+#include <SD.h>
 
 // Begin using the library by creating an instance of the MMA8452Q
 //  class. We'll call it "accel". That's what we'll reference from
@@ -44,9 +47,14 @@ MMA8452Q
 //  accelerometer.
 unsigned long lastMillis,duration;
 unsigned long loopCount;
+bool recordState = false;
+#define RECORDPIN 2
 
 void setup()
-{
+{ 
+  pinMode(RECORDPIN, INPUT);  // Record a session when RECORDPIN is low.
+  digitalWrite(RECORDPIN, HIGH);  // enable pullup on RECORDPIN
+  
   Serial.begin(9600);
   Serial.println("Dual MMA8452Q init.");
   
@@ -71,7 +79,7 @@ void setup()
   accel2.init(SCALE_8G,ODR_400);
   Serial.println("Dual MMA8452Q init done.");
 
-  sdcardSetup();
+  //sdcardSetup();
 
   // TWBR change i2c frequency according to WIRE library documentation
   TWBR = 12; // #define TWI_FREQ 400000L
@@ -87,10 +95,36 @@ void setup()
 void loop()
 {
   #define MICRODELAY 250
-  #define BETWEENMSG 5000
+  #define BETWEENMSG 2000
   #define HZCOEFF (BETWEENMSG*0.001)
 
-  long now = micros();
+  int rp = digitalRead(RECORDPIN);
+  if (rp == false)  // RECORDPIN to the ground => enable recording
+  {
+    if (!recordState)
+    {
+      Serial.print("Recording ENABLED.");
+      Serial.println();
+      recordState = false;
+    }
+    recordState = true;
+    recordLoop();
+  }
+  else  // rp == true // RECORDPIN pulled-up => stop recording
+  {
+    if (recordState)
+    {
+      Serial.print("Recording DISABLED.");
+      Serial.println();
+      recordState = false;
+    }
+  }
+
+}
+
+void recordLoop()
+{
+    long now = micros();
     while (!accel1.available())
       delayMicroseconds(MICRODELAY);
     while (!accel2.available())
@@ -139,6 +173,7 @@ void loop()
     lastMillis = micros()/1000;
   }
 }
+
 
 // The function demonstrates how to use the accel.x, accel.y and
 //  accel.z variables.

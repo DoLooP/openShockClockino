@@ -67,15 +67,15 @@ void setup()
   //     ODR_6, or ODR_1. 
   //     Sets to 800, 400, 200, 100, 50, 12.5, 6.25, or 1.56 Hz.
   //accel.init(SCALE_8G, ODR_6);
-  accel1.init(SCALE_8G);
-  accel2.init(SCALE_8G);
+  accel1.init(SCALE_8G,ODR_400);
+  accel2.init(SCALE_8G,ODR_400);
   Serial.println("Dual MMA8452Q init done.");
 
   // TWBR change i2c frequency according to WIRE library documentation
-  // TWBR = 12; // #define TWI_FREQ 400000L
-  TWBR = 2; // #define TWI_FREQ 800000L
+  TWBR = 12; // #define TWI_FREQ 400000L
+  // TWBR = 2; // #define TWI_FREQ 800000L
 
-  lastMillis = millis(); // to print a debug msg every N ms.
+  lastMillis = micros()/1000; // to print a debug msg every N ms.
   duration = 0;
   loopCount = 0;
 }
@@ -84,20 +84,19 @@ void setup()
 //  accelerometer and print it out if it's available.
 void loop()
 {
-  #define MICRODELAY 500
+  #define MICRODELAY 250
   #define BETWEENMSG 5000
   #define HZCOEFF (BETWEENMSG*0.001)
 
-  long start = micros();
-  {
+  long now = micros();
     while (!accel1.available())
       delayMicroseconds(MICRODELAY);
-    accel1.read();
     while (!accel2.available())
       delayMicroseconds(MICRODELAY);
-    accel2.read();
-  }
-  duration += micros() - start;
+  duration += micros() - now;
+  accel1.read();
+  accel2.read();
+
   loopCount++;
   
   // #define DEBUG
@@ -108,38 +107,34 @@ void loop()
     delay (333);
   #endif
 
-  long now = millis();
+  now /= 1000;  // micros to millis
   if ( now - lastMillis > BETWEENMSG)
   {
-    lastMillis = now;
-    Serial.print("Accel 1:");
     printCalculatedAccels(accel1);
     printOrientation(accel1);
-    Serial.println();
-
-    Serial.print("Accel 2:");
+    Serial.print("\t");
     printCalculatedAccels(accel2);
     printOrientation(accel2);
     Serial.println();
 
-    int avgDuration = duration / loopCount;
     Serial.print("Loops:");
     Serial.print(loopCount);
     Serial.println();
 
-    Serial.print("Sampling duration:");
-    Serial.print(avgDuration);
-    Serial.print("microseconds");
+    Serial.print("CPU availability:");
+    Serial.print(duration/loopCount); // 2500micros available per sample
+    Serial.print("/2500micros");
     Serial.println();
     
     Serial.print("Samples per second:");
-    Serial.print((double)1000000/avgDuration);
+    Serial.print((double)(1000)*loopCount/BETWEENMSG);
     Serial.print("Hz");
     Serial.println();
     Serial.println();
     
     loopCount = 0;
     duration = 0;
+    lastMillis = micros()/1000;
   }
 }
 

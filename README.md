@@ -13,14 +13,17 @@ hardware:
 Project steps:
  - connect to mma8452 through i2c /step1 DONE/
  - connect/sample dual mma8452 through i2c /step2 DONE/ ( max sample rate: 340Hz :/ )
- - improve sampling rate (verify i2c clock, read MMA8452 lib) <<-- *next step*
- - assemble SDcard shield
+ - improve sampling rate (verify i2c clock, read MMA8452 lib) /step3 DONE/
+     > (increased i2c clock from 100 to 400 / 800KHz => max Sample rate is now 800hz, limited by MMA8452 max output)
+ - assemble SDcard shield /DONE/
+ - Test SDCARD lib   *<<-- WE'RE HERE !*
  - init realtime clock dialog
  - output realtime-clock column in csv file @ 400hz
  - clock;mma8452 >> csv file @ 400hz
  - Add a lsm303 on i2c
  - clock;mma8452;lsm303 >> csv file @ 400hz
  - add a spectraSymbol
+ - build a slider for the magnetopots
  - adds all other sensors
 ...
 Maybe we'll hit i2c bandwidth limitation before interfacing 4 digitals sensors. In this case we'll use some kind of SDI to i2c switch.

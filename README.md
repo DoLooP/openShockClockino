@@ -16,9 +16,9 @@ Project steps:
  - improve sampling rate (verify i2c clock, read MMA8452 lib) /step3 DONE/
      > (increased i2c clock from 100 to 400 / 800KHz => max Sample rate is now 800hz, limited by MMA8452 max output)
  - assemble SDcard shield /DONE/
- - Test SDCARD lib   *<<-- WE'RE HERE !*
+ - Test SDCARD lib /step4 DONE/
  - init realtime clock dialog
- - output realtime-clock column in csv file @ 400hz
+ - output realtime-clock column in csv file @ 400hz   *<<-- WE'RE HERE !*
  - clock;mma8452 >> csv file @ 400hz
  - Add a lsm303 on i2c
  - clock;mma8452;lsm303 >> csv file @ 400hz

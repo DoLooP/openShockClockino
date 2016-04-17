@@ -1,0 +1,2 @@
+https://github.com/adafruit/SD.git
+https://github.com/sparkfun/MMA8452_Accelerometer.git

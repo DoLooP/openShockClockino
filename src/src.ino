@@ -49,6 +49,10 @@ unsigned long lastMillis,duration;
 unsigned long loopCount;
 bool recordState = false;
 #define RECORDPIN 2
+#define SDCARDCSPIN 10
+
+unsigned long recordCount;
+File myFile;
 
 void setup()
 { 
@@ -80,6 +84,7 @@ void setup()
   Serial.println("Dual MMA8452Q init done.");
 
   //sdcardSetup();
+  SD.begin(SDCARDCSPIN);
 
   // TWBR change i2c frequency according to WIRE library documentation
   TWBR = 12; // #define TWI_FREQ 400000L
@@ -88,6 +93,7 @@ void setup()
   lastMillis = micros()/1000; // to print a debug msg every N ms.
   duration = 0;
   loopCount = 0;
+  recordCount = 0;
 }
 
 // The loop function will simply check for new data from the
@@ -106,6 +112,7 @@ void loop()
       Serial.print("Recording ENABLED.");
       Serial.println();
       recordState = false;
+      openNewFile();
     }
     recordState = true;
     recordLoop();
@@ -117,31 +124,53 @@ void loop()
       Serial.print("Recording DISABLED.");
       Serial.println();
       recordState = false;
+      closeCurrentFile();
     }
+    delay(500);
   }
 
 }
 
+void openNewFile()
+{
+  SD.remove("datalog.csv");
+  myFile = SD.open("datalog.csv", FILE_WRITE);
+  myFile.write("millis;X1;Y1;Z1;X2;Y2;Z2\r\n");  // csv header
+}
+
+void closeCurrentFile()
+{
+  myFile.close();
+}
+
 void recordLoop()
 {
-    long now = micros();
-    while (!accel1.available())
-      delayMicroseconds(MICRODELAY);
-    while (!accel2.available())
-      delayMicroseconds(MICRODELAY);
+  long now = micros();
+  while (!accel1.available())
+    delayMicroseconds(MICRODELAY);
+  while (!accel2.available())
+    delayMicroseconds(MICRODELAY);
   duration += micros() - now;
   accel1.read();
   accel2.read();
 
+  myFile.print(now);
+  myFile.write(';');
+  myFile.print(accel1.x);
+  myFile.write(';');
+  myFile.print(accel1.y);
+  myFile.write(';');
+  myFile.print(accel1.z);
+  myFile.write(';');
+  myFile.print(accel2.x);
+  myFile.write(';');
+  myFile.print(accel2.y);
+  myFile.write(';');
+  myFile.print(accel2.z);
+  myFile.write("\r\n");
+
+  recordCount++;
   loopCount++;
-  
-  // #define DEBUG
-  #ifdef DEBUG
-    Serial.print("Dual accel read:");
-    Serial.print(duration);
-    Serial.println();
-    delay (333);
-  #endif
 
   now /= 1000;  // micros to millis
   if ( now - lastMillis > BETWEENMSG)
@@ -153,8 +182,8 @@ void recordLoop()
     printOrientation(accel2);
     Serial.println();
 
-    Serial.print("Loops:");
-    Serial.print(loopCount);
+    Serial.print("RecordCount: ");
+    Serial.print(recordCount);
     Serial.println();
 
     Serial.print("CPU availability:");

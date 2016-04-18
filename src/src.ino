@@ -32,9 +32,10 @@ Distributed as-is; no warranty is given.
 ******************************************************************************/
 #include <Wire.h> // Must include Wire library for I2C
 #include <SparkFun_MMA8452Q.h> // Includes the SFE_MMA8452Q library
-// include the SD library:
+// include the SDfat library:
 #include <SPI.h>
-#include <SD.h>
+#include <SdFat.h>
+SdFat SD;
 
 // Begin using the library by creating an instance of the MMA8452Q
 //  class. We'll call it "accel". That's what we'll reference from
@@ -53,6 +54,16 @@ bool recordState = false, serialForceRecording = false;
 
 unsigned long recordCount;
 File myFile;
+
+/*
+struct {
+  unsigned long 
+    outsideLoop
+    ,accelAvailable
+    ,accelRead
+    ,sdWrite;
+} profiler;
+*/
 
 void setup()
 { 
@@ -102,7 +113,6 @@ void loop()
 {
   #define MICRODELAY 250
   #define BETWEENMSG 2000
-  #define HZCOEFF (BETWEENMSG*0.001)
 
   if (Serial.available())
   {
@@ -149,6 +159,43 @@ void closeCurrentFile()
   myFile.close();
 }
 
+class LineBuffer : public Print
+{
+  public:
+  uint8_t c_str[64];
+  uint8_t *p;
+
+  LineBuffer()
+  {
+    reset();
+  }
+
+  size_t reset()
+  {
+    size_t s = p-c_str;
+    p = c_str;
+    return s;
+  }
+
+  size_t write(const char *c, size_t l)
+  {
+    if (p - c_str + l < 64)
+      memcpy(p,c,l);
+    p += l;
+    return p-c_str;
+  }
+  
+  virtual size_t write(uint8_t c)
+  {
+    if (p-c_str < 64)
+    {
+      *p = c;
+      p++;
+    }
+    return p-c_str;
+  }
+} lb;
+
 void recordLoop()
 {
   long now = micros();
@@ -160,20 +207,22 @@ void recordLoop()
   accel1.read();
   accel2.read();
 
-  myFile.print(now);
-  myFile.write(';');
-  myFile.print(accel1.x);
-  myFile.write(';');
-  myFile.print(accel1.y);
-  myFile.write(';');
-  myFile.print(accel1.z);
-  myFile.write(';');
-  myFile.print(accel2.x);
-  myFile.write(';');
-  myFile.print(accel2.y);
-  myFile.write(';');
-  myFile.print(accel2.z);
-  myFile.write("\r\n");
+  lb.print(now);
+  lb.write(';');
+  lb.print(accel1.x);
+  lb.write(';');
+  lb.print(accel1.y);
+  lb.write(';');
+  lb.print(accel1.z);
+  lb.write(';');
+  lb.print(accel2.x);
+  lb.write(';');
+  lb.print(accel2.y);
+  lb.write(';');
+  lb.print(accel2.z);
+  lb.write("\r\n",2);
+
+  myFile.write(lb.c_str,lb.reset());
 
   recordCount++;
   loopCount++;

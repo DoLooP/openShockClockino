@@ -47,7 +47,7 @@ MMA8452Q
 //  accelerometer.
 unsigned long lastMillis,duration;
 unsigned long loopCount;
-bool recordState = false;
+bool recordState = false, serialForceRecording = false;
 #define RECORDPIN 2
 #define SDCARDCSPIN 10
 
@@ -104,8 +104,14 @@ void loop()
   #define BETWEENMSG 2000
   #define HZCOEFF (BETWEENMSG*0.001)
 
-  int rp = digitalRead(RECORDPIN);
-  if (rp == false)  // RECORDPIN to the ground => enable recording
+  if (Serial.available())
+  {
+    Serial.print("Serial recording toggle.\n");
+    Serial.read();
+    serialForceRecording ^= 1;  // reverse state
+  }
+
+  if (digitalRead(RECORDPIN) == 0 || serialForceRecording)  // RECORDPIN low (=0) => enable recording
   {
     if (!recordState)
     {
@@ -117,7 +123,7 @@ void loop()
     recordState = true;
     recordLoop();
   }
-  else  // rp == true // RECORDPIN pulled-up => stop recording
+  else  // RECORDPIN pulled-up => stop recording
   {
     if (recordState)
     {

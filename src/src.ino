@@ -1,41 +1,20 @@
-/******************************************************************************
-MMA8452Q_Basic.ino
-SFE_MMA8452Q Library Basic Example Sketch
-Jim Lindblom @ SparkFun Electronics
-Original Creation Date: June 3, 2014
-https://github.com/sparkfun/MMA8452_Accelerometer
-
-This sketch uses the SparkFun_MMA8452Q library to initialize the
-accelerometer, and stream values from it.
-
-Hardware hookup:
-  Arduino --------------- MMA8452Q Breakout
-    3.3V  ---------------     3.3V
-    GND   ---------------     GND
-  SDA (A4) --\/330 Ohm\/--    SDA
-  SCL (A5) --\/330 Ohm\/--    SCL
-
-The MMA8452Q is a 3.3V max sensor, so you'll need to do some 
-level-shifting between the Arduino and the breakout. Series
-resistors on the SDA and SCL lines should do the trick.
-
-Development environment specifics:
-	IDE: Arduino 1.0.5
-	Hardware Platform: Arduino Uno
-	
-	**Updated for Arduino 1.6.4 5/2015**
-
-This code is beerware; if you see me (or any other SparkFun employee) at the
-local, and you've found our code helpful, please buy us a round!
-
-Distributed as-is; no warranty is given.
-******************************************************************************/
 #include <Wire.h> // Must include Wire library for I2C
 #include <SparkFun_MMA8452Q.h> // Includes the SFE_MMA8452Q library
 // include the SDfat library:
 #include <SPI.h>
 #include <SdFat.h>
 SdFat SD;
+
+#define __ASSERT_USE_STDERR
+#include <assert.h>
+void __assert(const char *__func, const char *__file, int __lineno, const char *__sexp) {
+    Serial.println(__func);
+    Serial.println(__file);
+    Serial.println(__lineno, DEC);
+    Serial.println(__sexp);
+    Serial.flush();
+    abort();
+}
 
 // Begin using the library by creating an instance of the MMA8452Q
 //  class. We'll call it "accel". That's what we'll reference from
@@ -44,9 +23,7 @@ MMA8452Q
   accel1(0x1D)  // i2c adress passed to constructor
   ,accel2(0x1C);  // i2c adress passed to constructor
 
-// The setup function simply starts serial and initializes the
-//  accelerometer.
-unsigned long lastMillis,duration;
+unsigned long lastMillis,nextSampleWait;
 unsigned long loopCount;
 bool recordState = false, serialForceRecording = false;
 #define RECORDPIN 2
@@ -54,6 +31,61 @@ bool recordState = false, serialForceRecording = false;
 
 unsigned long recordCount;
 File myFile;
+
+class WriteBuffer : public Print
+{
+  public:
+  uint8_t str[64];
+  uint8_t *p;
+  File *file;
+
+  WriteBuffer(File &file)
+  {
+    this->file = &file;
+    reset();
+  }
+
+  void flush()
+  {
+    assert(p > str);
+    assert(p-str <= sizeof str);
+    file->write(str,reset());
+  }
+
+  size_t reset()
+  {
+    size_t s = p-str;
+    p = str;
+    return s;
+  }
+
+  virtual size_t write(const uint8_t *buffer, size_t l)
+  {
+    int sizeUsed = p-str;
+    while (sizeUsed+l > sizeof str)
+    {
+      int sizeLeft = sizeof str - sizeUsed;
+      memcpy(p,buffer,sizeLeft);
+      flush();
+      buffer += sizeLeft;
+      l -= sizeLeft;
+      sizeUsed = 0;
+    }
+    assert( l<sizeof str );
+    memcpy(p,buffer,l);
+    p += l;
+    return p-str;
+  }
+  
+  virtual size_t write(uint8_t c)
+  {
+    if (p-str >= sizeof str)
+      flush();
+    *p = c;
+    p++;
+    return p-str;
+  }
+} wb(myFile);
 
 /*
 struct {
@@ -102,7 +134,7 @@ void setup()
   // TWBR = 2; // #define TWI_FREQ 800000L
 
   lastMillis = micros()/1000; // to print a debug msg every N ms.
-  duration = 0;
+  nextSampleWait = 0;
   loopCount = 0;
   recordCount = 0;
 }
@@ -140,6 +172,7 @@ void loop()
       Serial.print("Recording DISABLED.");
       Serial.println();
       recordState = false;
+      wb.flush();
       closeCurrentFile();
     }
     delay(500);
@@ -159,43 +192,6 @@ void closeCurrentFile()
   myFile.close();
 }
 
-class LineBuffer : public Print
-{
-  public:
-  uint8_t c_str[64];
-  uint8_t *p;
-
-  LineBuffer()
-  {
-    reset();
-  }
-
-  size_t reset()
-  {
-    size_t s = p-c_str;
-    p = c_str;
-    return s;
-  }
-
-  size_t write(const char *c, size_t l)
-  {
-    if (p - c_str + l < 64)
-      memcpy(p,c,l);
-    p += l;
-    return p-c_str;
-  }
-  
-  virtual size_t write(uint8_t c)
-  {
-    if (p-c_str < 64)
-    {
-      *p = c;
-      p++;
-    }
-    return p-c_str;
-  }
-} lb;
-
 void recordLoop()
 {
   long now = micros();
@@ -203,26 +199,24 @@ void recordLoop()
     delayMicroseconds(MICRODELAY);
   while (!accel2.available())
     delayMicroseconds(MICRODELAY);
-  duration += micros() - now;
+  nextSampleWait += micros() - now;
   accel1.read();
   accel2.read();
 
-  lb.print(now);
-  lb.write(';');
-  lb.print(accel1.x);
-  lb.write(';');
-  lb.print(accel1.y);
-  lb.write(';');
-  lb.print(accel1.z);
-  lb.write(';');
-  lb.print(accel2.x);
-  lb.write(';');
-  lb.print(accel2.y);
-  lb.write(';');
-  lb.print(accel2.z);
-  lb.write("\r\n",2);
-
-  myFile.write(lb.c_str,lb.reset());
+  wb.print(now);
+  wb.write(';');
+  wb.print(accel1.x);
+  wb.write(';');
+  wb.print(accel1.y);
+  wb.write(';');
+  wb.print(accel1.z);
+  wb.write(';');
+  wb.print(accel2.x);
+  wb.write(';');
+  wb.print(accel2.y);
+  wb.write(';');
+  wb.print(accel2.z);
+  wb.println();
 
   recordCount++;
   loopCount++;
@@ -241,9 +235,9 @@ void recordLoop()
     Serial.print(recordCount);
     Serial.println();
 
-    Serial.print("CPU availability:");
-    Serial.print(duration/loopCount); // 2500micros available per sample
-    Serial.print("/2500micros");
+    Serial.print("CPU use: ");
+    Serial.print(2500 - nextSampleWait/loopCount); // 2500micros available per sample
+    Serial.print(" of 2500micros");
     Serial.println();
     
     Serial.print("Samples per second:");
@@ -253,7 +247,7 @@ void recordLoop()
     Serial.println();
     
     loopCount = 0;
-    duration = 0;
+    nextSampleWait = 0;
     lastMillis = micros()/1000;
   }
 }

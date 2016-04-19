@@ -133,7 +133,6 @@ void setup()
   TWBR = 12; // #define TWI_FREQ 400000L
   // TWBR = 2; // #define TWI_FREQ 800000L
 
-  lastMillis = micros()/1000; // to print a debug msg every N ms.
   nextSampleWait = 0;
   loopCount = 0;
   recordCount = 0;
@@ -161,6 +160,7 @@ void loop()
       Serial.println();
       recordState = false;
       openNewFile();
+      lastMillis = micros()/1000; // to print a debug msg every N ms.
     }
     recordState = true;
     recordLoop();
@@ -223,35 +223,37 @@ void recordLoop()
 
   now /= 1000;  // micros to millis
   if ( now - lastMillis > BETWEENMSG)
-  {
-    printCalculatedAccels(accel1);
-    printOrientation(accel1);
-    Serial.print("\t");
-    printCalculatedAccels(accel2);
-    printOrientation(accel2);
-    Serial.println();
-
-    Serial.print("RecordCount: ");
-    Serial.print(recordCount);
-    Serial.println();
-
-    Serial.print("CPU use: ");
-    Serial.print(2500 - nextSampleWait/loopCount); // 2500micros available per sample
-    Serial.print(" of 2500micros");
-    Serial.println();
-    
-    Serial.print("Samples per second:");
-    Serial.print((double)(1000)*loopCount/BETWEENMSG);
-    Serial.print("Hz");
-    Serial.println();
-    Serial.println();
-    
-    loopCount = 0;
-    nextSampleWait = 0;
-    lastMillis = micros()/1000;
-  }
+    benchmark();
 }
 
+void benchmark()
+{
+  printCalculatedAccels(accel1);
+  printOrientation(accel1);
+  Serial.print("\t");
+  printCalculatedAccels(accel2);
+  printOrientation(accel2);
+  Serial.println();
+
+  Serial.print("RecordCount: ");
+  Serial.print(recordCount);
+  Serial.println();
+
+  Serial.print("CPU use: ");
+  Serial.print(2500 - nextSampleWait/loopCount); // 2500micros available per sample
+  Serial.print(" of 2500micros");
+  Serial.println();
+  
+  Serial.print("Samples per second:");
+  Serial.print((double)(1000)*loopCount/BETWEENMSG);
+  Serial.print("Hz");
+  Serial.println();
+  Serial.println();
+  
+  loopCount = 0;
+  nextSampleWait = 0;
+  lastMillis = micros()/1000;
+}
 
 // The function demonstrates how to use the accel.x, accel.y and
 //  accel.z variables.

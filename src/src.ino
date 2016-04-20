@@ -1,8 +1,6 @@
 #include <Wire.h> // Must include Wire library for I2C
 #include <SparkFun_MMA8452Q.h> // Includes the SFE_MMA8452Q library
-// include the SDfat library:
-#include <SPI.h>
-#include <SdFat.h>
+#include <SdFat.h> // already have custom hardware SPI implementation
 SdFat SD;
 
 #define __ASSERT_USE_STDERR
@@ -30,16 +28,21 @@ bool recordState = false, serialForceRecording = false;
 #define SDCARDCSPIN 10
 
 unsigned long recordCount;
-File myFile;
+typedef SdBaseFile FileType;
+FileType myFile;
 
+#define DEBUGWRITEBUFFER
+#ifdef DEBUGWRITEBUFFER
+  #define DEBUGWRITEBUFFER_FLUSH
+#endif
 class WriteBuffer : public Print
 {
   public:
-  uint8_t str[64];
+  uint8_t str[96];
   uint8_t *p;
-  File *file;
+  FileType *file;
 
-  WriteBuffer(File &file)
+  WriteBuffer(FileType &file)
   {
     this->file = &file;
     reset();
@@ -49,6 +52,18 @@ class WriteBuffer : public Print
   {
     assert(p > str);
     assert(p-str <= sizeof str);
+#ifdef DEBUGWRITEBUFFER_FLUSH
+    Serial.println();
+    Serial.print("flush():");
+    Serial.print((unsigned long)str,HEX);
+    Serial.write(',');
+    Serial.print(p-str);
+    Serial.println("[");
+    Serial.write(str,p-str);
+    Serial.println();
+    Serial.println("]");
+    delay(250);
+#endif
     file->write(str,reset());
   }
 
@@ -66,6 +81,7 @@ class WriteBuffer : public Print
     {
       int sizeLeft = sizeof str - sizeUsed;
       memcpy(p,buffer,sizeLeft);
+      p += sizeLeft;
       flush();
       buffer += sizeLeft;
       l -= sizeLeft;
@@ -125,9 +141,14 @@ void setup()
   accel1.init(SCALE_8G,ODR_400);
   accel2.init(SCALE_8G,ODR_400);
   Serial.println("Dual MMA8452Q init done.");
+  if (!SD.begin(10,1))
+  {
+    Serial.println("SDcard init failed.");
+    abort();
+  }
+  else
+      Serial.println("SDcard OK.");
 
-  //sdcardSetup();
-  SD.begin(SDCARDCSPIN);
 
   // TWBR change i2c frequency according to WIRE library documentation
   TWBR = 12; // #define TWI_FREQ 400000L
@@ -182,8 +203,7 @@ void loop()
 
 void openNewFile()
 {
-  SD.remove("datalog.csv");
-  myFile = SD.open("datalog.csv", FILE_WRITE);
+  myFile.open("datalog.csv", O_TRUNC | O_WRITE );
   myFile.write("millis;X1;Y1;Z1;X2;Y2;Z2\r\n");  // csv header
 }
 

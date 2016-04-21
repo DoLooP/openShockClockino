@@ -29,7 +29,7 @@ bool recordState = false, serialForceRecording = false;
 #define SDCARDCSPIN 10
 
 unsigned long recordCount;
-typedef File FileType;
+typedef SdFile FileType;
 FileType myFile;
 
 //#define DEBUGWRITEBUFFER
@@ -182,7 +182,7 @@ void loop()
 void openNewFile()
 {
   assert(SD.remove("datalog.csv"));
-  assert(myFile = SD.open("datalog.csv", FILE_WRITE));
+  assert(myFile.open("datalog.csv", FILE_WRITE));
   wb.print("millis;X1;Y1;Z1;X2;Y2;Z2\r\n");  // csv header
 }
 

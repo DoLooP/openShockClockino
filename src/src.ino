@@ -22,8 +22,7 @@ MMA8452Q
   accel1(0x1D)  // i2c adress passed to constructor
   ,accel2(0x1C);  // i2c adress passed to constructor
 
-unsigned long lastMillis,nextSampleWait;
-unsigned long loopCount;
+unsigned long recordStart,nextSampleWait,loopCount;
 bool recordState = false, serialForceRecording = false;
 #define RECORDPIN 2
 #define SDCARDCSPIN 10
@@ -125,7 +124,13 @@ void setup()
   Serial.println("MMA8452Q #1 OK.");
   assert(accel2.init(SCALE_8G,ODR_400));
   Serial.println("MMA8452Q #2 OK.");
-  assert(SD.begin(10,1));
+  if (!SD.begin(10,1))
+  {
+    Serial.println("Please insert SDcard.");
+    delay(1000);
+  }
+  while(!SD.begin(10,1))
+    delay(1000);
   Serial.println("SDcard OK.");
 
   // TWBR change i2c frequency according to WIRE library documentation
@@ -142,7 +147,6 @@ void setup()
 void loop()
 {
   #define MICRODELAY 250
-  #define BETWEENMSG 2000
 
   if (Serial.available())
   {
@@ -159,7 +163,7 @@ void loop()
       Serial.println();
       recordState = false;
       openNewFile();
-      lastMillis = micros()/1000; // to print a debug msg every N ms.
+      recordStart = millis();
     }
     recordState = true;
     recordLoop();
@@ -168,11 +172,13 @@ void loop()
   {
     if (recordState)
     {
+      recordStart = millis() - recordStart;
       Serial.print("Recording DISABLED.");
       Serial.println();
       recordState = false;
       wb.flush();
       closeCurrentFile();
+      benchmark();
     }
     delay(500);
   }
@@ -180,7 +186,7 @@ void loop()
 
 void openNewFile()
 {
-  assert(SD.remove("datalog.csv"));
+  SD.remove("datalog.csv");
   assert(myFile.open("datalog.csv", FILE_WRITE));
   wb.print("millis;X1;Y1;Z1;X2;Y2;Z2\r\n");  // csv header
 }
@@ -192,7 +198,7 @@ void closeCurrentFile()
 
 void recordLoop()
 {
-  long now = micros();
+  unsigned long now = micros();
   while (!accel1.available())
     delayMicroseconds(MICRODELAY);
   while (!accel2.available())
@@ -218,10 +224,6 @@ void recordLoop()
 
   recordCount++;
   loopCount++;
-
-  now /= 1000;  // micros to millis
-  if ( now - lastMillis > BETWEENMSG)
-    benchmark();
 }
 
 void benchmark()
@@ -243,14 +245,13 @@ void benchmark()
   Serial.println();
   
   Serial.print("Samples per second:");
-  Serial.print((double)(1000)*loopCount/BETWEENMSG);
+  Serial.print((double)(1000)*loopCount/recordStart);
   Serial.print("Hz");
   Serial.println();
   Serial.println();
   
   loopCount = 0;
   nextSampleWait = 0;
-  lastMillis = micros()/1000;
 }
 
 // The function demonstrates how to use the accel.x, accel.y and

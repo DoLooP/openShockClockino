@@ -6,6 +6,7 @@ SdFat SD;
 #define __ASSERT_USE_STDERR
 #include <assert.h>
 void __assert(const char *__func, const char *__file, int __lineno, const char *__sexp) {
+    Serial.println("Assertion Fail:");
     Serial.println(__func);
     Serial.println(__file);
     Serial.println(__lineno, DEC);
@@ -28,10 +29,10 @@ bool recordState = false, serialForceRecording = false;
 #define SDCARDCSPIN 10
 
 unsigned long recordCount;
-typedef SdBaseFile FileType;
+typedef File FileType;
 FileType myFile;
 
-#define DEBUGWRITEBUFFER
+//#define DEBUGWRITEBUFFER
 #ifdef DEBUGWRITEBUFFER
   #define DEBUGWRITEBUFFER_FLUSH
 #endif
@@ -119,36 +120,13 @@ void setup()
   digitalWrite(RECORDPIN, HIGH);  // enable pullup on RECORDPIN
   
   Serial.begin(9600);
-  Serial.println("Dual MMA8452Q init.");
-  
-  // Choose your adventure! There are a few options when it comes
-  // to initializing the MMA8452Q:
-  //  1. Default init. This will set the accelerometer up
-  //     with a full-scale range of +/-2g, and an output data rate
-  //     of 800 Hz (fastest).
-  // accel.init();
-  //  2. Initialize with FULL-SCALE setting. You can set the scale
-  //     using either SCALE_2G, SCALE_4G, or SCALE_8G as the value.
-  //     That'll set the scale to +/-2g, 4g, or 8g respectively.
-  //accel.init(SCALE_4G); // Uncomment this out if you'd like
-  //  3. Initialize with FULL-SCALE and DATA RATE setting. If you
-  //     want control over how fast your accelerometer produces
-  //     data use one of the following options in the second param:
-  //     ODR_800, ODR_400, ODR_200, ODR_100, ODR_50, ODR_12,
-  //     ODR_6, or ODR_1. 
-  //     Sets to 800, 400, 200, 100, 50, 12.5, 6.25, or 1.56 Hz.
-  //accel.init(SCALE_8G, ODR_6);
-  accel1.init(SCALE_8G,ODR_400);
-  accel2.init(SCALE_8G,ODR_400);
-  Serial.println("Dual MMA8452Q init done.");
-  if (!SD.begin(10,1))
-  {
-    Serial.println("SDcard init failed.");
-    abort();
-  }
-  else
-      Serial.println("SDcard OK.");
-
+  Serial.println("Init.");
+  assert(accel1.init(SCALE_8G,ODR_400));
+  Serial.println("MMA8452Q #1 OK.");
+  assert(accel2.init(SCALE_8G,ODR_400));
+  Serial.println("MMA8452Q #2 OK.");
+  assert(SD.begin(10,1));
+  Serial.println("SDcard OK.");
 
   // TWBR change i2c frequency according to WIRE library documentation
   TWBR = 12; // #define TWI_FREQ 400000L
@@ -203,13 +181,14 @@ void loop()
 
 void openNewFile()
 {
-  myFile.open("datalog.csv", O_TRUNC | O_WRITE );
-  myFile.write("millis;X1;Y1;Z1;X2;Y2;Z2\r\n");  // csv header
+  assert(SD.remove("datalog.csv"));
+  assert(myFile = SD.open("datalog.csv", FILE_WRITE));
+  wb.print("millis;X1;Y1;Z1;X2;Y2;Z2\r\n");  // csv header
 }
 
 void closeCurrentFile()
 {
-  myFile.close();
+  assert(myFile.close());
 }
 
 void recordLoop()

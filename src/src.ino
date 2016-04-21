@@ -29,7 +29,7 @@ bool recordState = false, serialForceRecording = false;
 #define SDCARDCSPIN 10
 
 unsigned long recordCount;
-typedef SdFile FileType;
+typedef SdBaseFile FileType;
 FileType myFile;
 
 //#define DEBUGWRITEBUFFER
@@ -176,7 +176,6 @@ void loop()
     }
     delay(500);
   }
-
 }
 
 void openNewFile()

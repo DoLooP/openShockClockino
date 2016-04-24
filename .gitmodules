@@ -1,0 +1,21 @@
+[submodule "dependencies/Adafruit_LSM303DLHC"]
+	path = dependencies/Adafruit_LSM303DLHC
+	url = https://github.com/adafruit/Adafruit_LSM303DLHC.git
+[submodule "dependencies/Adafruit_Sensor"]
+	path = dependencies/Adafruit_Sensor
+	url = https://github.com/adafruit/Adafruit_Sensor.git
+[submodule "dependencies/Adafruit_L3GD20_U"]
+	path = dependencies/Adafruit_L3GD20_U
+	url = https://github.com/adafruit/Adafruit_L3GD20_U.git
+[submodule "dependencies/Adafruit_BMP085_Unified"]
+	path = dependencies/Adafruit_BMP085_Unified
+	url = https://github.com/adafruit/Adafruit_BMP085_Unified.git
+[submodule "dependencies/Adafruit_10DOF"]
+	path = dependencies/Adafruit_10DOF
+	url = https://github.com/adafruit/Adafruit_10DOF.git
+[submodule "dependencies/SdFat"]
+	path = dependencies/SdFat
+	url = https://github.com/greiman/SdFat.git
+[submodule "dependencies/MMA8452_Accelerometer"]
+	path = dependencies/MMA8452_Accelerometer
+	url = https://github.com/sparkfun/MMA8452_Accelerometer.git

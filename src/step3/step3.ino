@@ -22,96 +22,13 @@ MMA8452Q
   accel1(0x1D)  // i2c adress passed to constructor
   ,accel2(0x1C);  // i2c adress passed to constructor
 
-unsigned long recordStart,nextSampleWait,loopCount;
+unsigned long recordStart,nextSampleWait,loopCount,recordCount;
 bool recordState = false, serialForceRecording = false;
 #define RECORDPIN 2
 #define SDCARDCSPIN 10
 
-unsigned long recordCount;
-typedef SdBaseFile FileType;
+typedef ofstream FileType;
 FileType myFile;
-
-//#define DEBUGWRITEBUFFER
-#ifdef DEBUGWRITEBUFFER
-  #define DEBUGWRITEBUFFER_FLUSH
-#endif
-class WriteBuffer : public Print
-{
-  public:
-  uint8_t str[96];
-  uint8_t *p;
-  FileType *file;
-
-  WriteBuffer(FileType &file)
-  {
-    this->file = &file;
-    reset();
-  }
-
-  void flush()
-  {
-    assert(p > str);
-    assert(p-str <= sizeof str);
-#ifdef DEBUGWRITEBUFFER_FLUSH
-    Serial.println();
-    Serial.print("flush():");
-    Serial.print((unsigned long)str,HEX);
-    Serial.write(',');
-    Serial.print(p-str);
-    Serial.println("[");
-    Serial.write(str,p-str);
-    Serial.println();
-    Serial.println("]");
-    delay(250);
-#endif
-    file->write(str,reset());
-  }
-
-  size_t reset()
-  {
-    size_t s = p-str;
-    p = str;
-    return s;
-  }
-
-  virtual size_t write(const uint8_t *buffer, size_t l)
-  {
-    int sizeUsed = p-str;
-    while (sizeUsed+l > sizeof str)
-    {
-      int sizeLeft = sizeof str - sizeUsed;
-      memcpy(p,buffer,sizeLeft);
-      p += sizeLeft;
-      flush();
-      buffer += sizeLeft;
-      l -= sizeLeft;
-      sizeUsed = 0;
-    }
-    assert( l<sizeof str );
-    memcpy(p,buffer,l);
-    p += l;
-    return p-str;
-  }
-  
-  virtual size_t write(uint8_t c)
-  {
-    if (p-str >= sizeof str)
-      flush();
-    *p = c;
-    p++;
-    return p-str;
-  }
-} wb(myFile);
-
-/*
-struct {
-  unsigned long 
-    outsideLoop
-    ,accelAvailable
-    ,accelRead
-    ,sdWrite;
-} profiler;
-*/
 
 void setup()
 { 
@@ -176,7 +93,6 @@ void loop()
       Serial.print("Recording DISABLED.");
       Serial.println();
       recordState = false;
-      wb.flush();
       closeCurrentFile();
       benchmark();
     }
@@ -187,13 +103,15 @@ void loop()
 void openNewFile()
 {
   SD.remove("datalog.csv");
-  assert(myFile.open("datalog.csv", FILE_WRITE));
-  wb.print("millis;X1;Y1;Z1;X2;Y2;Z2\r\n");  // csv header
+  myFile.open("datalog.csv");  // http://forum.arduino.cc/index.php?topic=49649.0
+  assert(myFile.is_open());
+  myFile << "millis;X1;Y1;Z1;X2;Y2;Z2\r\n";  // csv header
 }
 
 void closeCurrentFile()
 {
-  assert(myFile.close());
+  myFile.close();
+  assert(!myFile.is_open());
 }
 
 void recordLoop()
@@ -207,20 +125,7 @@ void recordLoop()
   accel1.read();
   accel2.read();
 
-  wb.print(now);
-  wb.write(';');
-  wb.print(accel1.x);
-  wb.write(';');
-  wb.print(accel1.y);
-  wb.write(';');
-  wb.print(accel1.z);
-  wb.write(';');
-  wb.print(accel2.x);
-  wb.write(';');
-  wb.print(accel2.y);
-  wb.write(';');
-  wb.print(accel2.z);
-  wb.println();
+  myFile << now << ';' << accel1.x << ';' << accel1.y << ';' << accel1.z << ';' << accel2.x << ';' << accel2.y << ';' << accel2.z << "\r\n";   // https://forums.adafruit.com/viewtopic.php?f=31&t=20951
 
   recordCount++;
   loopCount++;

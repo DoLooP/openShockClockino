@@ -57,19 +57,4 @@ const uint8_t BUFFER_BLOCK_COUNT = 12;
 
 // Size of file base name.  Must not be larger than six.
 const uint8_t BASE_NAME_SIZE = sizeof(FILE_BASE_NAME) - 1;
-
-
 char binName[13] = FILE_BASE_NAME "00.csv";
-
-// Number of data records in a block.
-const uint16_t DATA_DIM = (512 - 4)/sizeof(data_t);
-
-//Compute fill so block size is 512 bytes.  FILL_DIM may be zero.
-const uint16_t FILL_DIM = 512 - 4 - DATA_DIM*sizeof(data_t);
-
-struct block_t {
-  uint16_t count;
-  uint16_t overrun;
-  data_t data[DATA_DIM];
-  uint8_t fill[FILL_DIM];
-};

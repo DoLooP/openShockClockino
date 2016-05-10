@@ -1,0 +1,1 @@
+void acquireData(WriteBuffer &wb);

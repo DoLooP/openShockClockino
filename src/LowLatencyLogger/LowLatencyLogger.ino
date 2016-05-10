@@ -1,21 +1,19 @@
 /*
 	HACKED through SdFat LowLatencyLogger exemple
 */
+#include <Wire.h>
+#include <SparkFun_MMA8452Q.h>
 #include <SPI.h>
 #include <SdFat.h>
 #include <SdFatUtil.h>
 #include "LLLconstant.h"
 #include "myAssert.h"
 #include "writeBuffer.h"
+#include "acquireData.h"
+#include "sensorDetect.h"
 
 SdFat sd;
 SdBaseFile binFile;
-
-#define DEBUGACQUIREDATA
-
-void acquireData(WriteBuffer &wb) {
-	wb.print("-1234;-1234;-1234;-1234;-1234;-1234\r\n");
-}
 
 void fatalBlink() {
 	while (true) {
@@ -148,6 +146,12 @@ void setup(void) {
     sd.initErrorPrint();
     fatalBlink();
   }
+
+  // TWBR change i2c frequency according to WIRE library documentation
+  TWBR = 12; // #define TWI_FREQ 400000L
+			 // TWBR = 2; // #define TWI_FREQ 800000L
+  sensorDetect();
+  
   Serial.print(F("Init OK"));
 }
 //------------------------------------------------------------------------------

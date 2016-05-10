@@ -93,7 +93,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino;C:\Program Files (x86)\Arduino\hardware\arduino\avr\variants\standard;C:\Users\DoLooP\src\openShockClockino\src\LowLatencyLogger;C:\Users\DoLooP\Documents\Arduino\libraries\SdFat;C:\Users\DoLooP\Documents\Arduino\libraries\SdFat\utility;C:\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\SPI\src;C:\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\SPI\src\utility;C:\Program Files (x86)\Arduino\libraries;C:\Program Files (x86)\Arduino\hardware\arduino\avr\libraries;C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\Extensions\j32tgl34.ufq\Micro Platforms\default\debuggers;C:\Users\DoLooP\Documents\Arduino\libraries;C:\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino;C:\Program Files (x86)\Arduino\hardware\arduino\avr\variants\standard;C:\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\SPI\src;C:\Users\DoLooP\Documents\Arduino\libraries\SdFat;C:\Program Files (x86)\Arduino\libraries;C:\Program Files (x86)\Arduino\hardware\arduino\avr\libraries;C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\Extensions\j32tgl34.ufq\Micro Platforms\default\debuggers;C:\Users\DoLooP\Documents\Arduino\libraries;C:\Users\DoLooP\Documents\Arduino\libraries\SdFat\utility;C:\Program Files (x86)\Arduino\hardware\tools\avr/avr/include/;C:\Program Files (x86)\Arduino\hardware\tools\avr//avr/include/avr/;C:\Program Files (x86)\Arduino\hardware\tools\avr/lib\gcc\avr\4.8.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino;C:\Program Files (x86)\Arduino\hardware\arduino\avr\variants\standard;C:\Users\DoLooP\src\openShockClockino\src\LowLatencyLogger;C:\Users\DoLooP\Documents\Arduino\libraries\SdFat;C:\Users\DoLooP\Documents\Arduino\libraries\SdFat\utility;C:\Users\DoLooP\Documents\Arduino\libraries\SparkFun_MMA8452Q;C:\Users\DoLooP\Documents\Arduino\libraries\SparkFun_MMA8452Q\utility;C:\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\SPI\src;C:\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\SPI\src\utility;C:\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\Wire\src;C:\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\Wire\src\utility;C:\Program Files (x86)\Arduino\libraries;C:\Program Files (x86)\Arduino\hardware\arduino\avr\libraries;C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\Extensions\20ih0035.i0f\Micro Platforms\default\debuggers;C:\Users\DoLooP\Documents\Arduino\libraries;C:\Program Files (x86)\Arduino\hardware\tools\avr/avr/include/;C:\Program Files (x86)\Arduino\hardware\tools\avr//avr/include/avr/;C:\Program Files (x86)\Arduino\hardware\tools\avr/lib\gcc\avr\4.8.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>C:\Users\DoLooP\src\openShockClockino\src\LowLatencyLogger\__vm\.LowLatencyLogger.vsarduino.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <PreprocessorDefinitions>__AVR_ATmega328p__;__AVR_ATmega328P__;F_CPU=16000000L;ARDUINO=10608;ARDUINO_AVR_UNO;ARDUINO_ARCH_AVR;__cplusplus=201103L;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -117,20 +117,122 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\wiring_pulse.S" />
     <None Include="LowLatencyLogger.ino">
       <FileType>CppCode</FileType>
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\Arduino.h" />
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\binary.h" />
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\Client.h" />
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\HardwareSerial.h" />
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\HardwareSerial_private.h" />
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\IPAddress.h" />
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\new.h" />
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\PluggableUSB.h" />
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\Print.h" />
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\Printable.h" />
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\Server.h" />
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\Stream.h" />
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\Udp.h" />
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\USBAPI.h" />
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\USBCore.h" />
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\USBDesc.h" />
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\WCharacter.h" />
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\wiring_private.h" />
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\WString.h" />
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\SPI\src\SPI.h" />
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\Wire\src\utility\twi.h" />
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\Wire\src\Wire.h" />
+    <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\variants\standard\pins_arduino.h" />
+    <ClInclude Include="..\..\..\..\Documents\Arduino\libraries\SdFat\MinimumSerial.h" />
+    <ClInclude Include="..\..\..\..\Documents\Arduino\libraries\SdFat\SdFat.h" />
+    <ClInclude Include="..\..\..\..\Documents\Arduino\libraries\SdFat\SdFatConfig.h" />
+    <ClInclude Include="..\..\..\..\Documents\Arduino\libraries\SdFat\SdFatmainpage.h" />
+    <ClInclude Include="..\..\..\..\Documents\Arduino\libraries\SdFat\SdFatUtil.h" />
+    <ClInclude Include="..\..\..\..\Documents\Arduino\libraries\SdFat\SdInfo.h" />
+    <ClInclude Include="..\..\..\..\Documents\Arduino\libraries\SdFat\SdSpi.h" />
+    <ClInclude Include="..\..\..\..\Documents\Arduino\libraries\SdFat\SdSpiCard.h" />
+    <ClInclude Include="..\..\..\..\Documents\Arduino\libraries\SdFat\SdVolume.h" />
+    <ClInclude Include="..\..\..\..\Documents\Arduino\libraries\SdFat\utility\ArduinoFiles.h" />
+    <ClInclude Include="..\..\..\..\Documents\Arduino\libraries\SdFat\utility\ArduinoStream.h" />
+    <ClInclude Include="..\..\..\..\Documents\Arduino\libraries\SdFat\utility\bufstream.h" />
+    <ClInclude Include="..\..\..\..\Documents\Arduino\libraries\SdFat\utility\DigitalPin.h" />
+    <ClInclude Include="..\..\..\..\Documents\Arduino\libraries\SdFat\utility\FatApiConstants.h" />
+    <ClInclude Include="..\..\..\..\Documents\Arduino\libraries\SdFat\utility\FatFile.h" />
+    <ClInclude Include="..\..\..\..\Documents\Arduino\libraries\SdFat\utility\FatFileSystem.h" />
+    <ClInclude Include="..\..\..\..\Documents\Arduino\libraries\SdFat\utility\FatLib.h" />
+    <ClInclude Include="..\..\..\..\Documents\Arduino\libraries\SdFat\utility\FatLibConfig.h" />
+    <ClInclude Include="..\..\..\..\Documents\Arduino\libraries\SdFat\utility\FatStructs.h" />
+    <ClInclude Include="..\..\..\..\Documents\Arduino\libraries\SdFat\utility\FatVolume.h" />
+    <ClInclude Include="..\..\..\..\Documents\Arduino\libraries\SdFat\utility\FmtNumber.h" />
+    <ClInclude Include="..\..\..\..\Documents\Arduino\libraries\SdFat\utility\fstream.h" />
+    <ClInclude Include="..\..\..\..\Documents\Arduino\libraries\SdFat\utility\ios.h" />
+    <ClInclude Include="..\..\..\..\Documents\Arduino\libraries\SdFat\utility\iostream.h" />
+    <ClInclude Include="..\..\..\..\Documents\Arduino\libraries\SdFat\utility\istream.h" />
+    <ClInclude Include="..\..\..\..\Documents\Arduino\libraries\SdFat\utility\ostream.h" />
+    <ClInclude Include="..\..\..\..\Documents\Arduino\libraries\SdFat\utility\SoftSPI.h" />
+    <ClInclude Include="..\..\..\..\Documents\Arduino\libraries\SdFat\utility\StdioStream.h" />
+    <ClInclude Include="..\..\..\..\Documents\Arduino\libraries\SparkFun_MMA8452Q\SparkFun_MMA8452Q.h" />
+    <ClInclude Include="acquireData.h" />
     <ClInclude Include="myAssert.h" />
     <ClInclude Include="LLLconstant.h">
       <FileType>CppCode</FileType>
     </ClInclude>
+    <ClInclude Include="sensorDetect.h" />
     <ClInclude Include="writeBuffer.h" />
     <ClInclude Include="__vm\.LowLatencyLogger.vsarduino.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\abi.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\CDC.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\HardwareSerial.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\HardwareSerial0.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\HardwareSerial1.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\HardwareSerial2.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\HardwareSerial3.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\hooks.c" />
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\IPAddress.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\main.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\new.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\PluggableUSB.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\Print.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\Stream.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\Tone.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\USBCore.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\WInterrupts.c" />
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\wiring.c" />
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\wiring_analog.c" />
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\wiring_digital.c" />
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\wiring_pulse.c" />
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\wiring_shift.c" />
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\WMath.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\WString.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\SPI\src\SPI.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\Wire\src\utility\twi.c" />
+    <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\Wire\src\Wire.cpp" />
+    <ClCompile Include="..\..\..\..\Documents\Arduino\libraries\SdFat\MinimumSerial.cpp" />
+    <ClCompile Include="..\..\..\..\Documents\Arduino\libraries\SdFat\SdFatBase.cpp" />
+    <ClCompile Include="..\..\..\..\Documents\Arduino\libraries\SdFat\SdFatUtil.cpp" />
+    <ClCompile Include="..\..\..\..\Documents\Arduino\libraries\SdFat\SdSpiCard.cpp" />
+    <ClCompile Include="..\..\..\..\Documents\Arduino\libraries\SdFat\SdSpiSAM3X.cpp" />
+    <ClCompile Include="..\..\..\..\Documents\Arduino\libraries\SdFat\SdSpiSTM32F1.cpp" />
+    <ClCompile Include="..\..\..\..\Documents\Arduino\libraries\SdFat\SdSpiTeensy3.cpp" />
+    <ClCompile Include="..\..\..\..\Documents\Arduino\libraries\SdFat\utility\FatFile.cpp" />
+    <ClCompile Include="..\..\..\..\Documents\Arduino\libraries\SdFat\utility\FatFileLFN.cpp" />
+    <ClCompile Include="..\..\..\..\Documents\Arduino\libraries\SdFat\utility\FatFilePrint.cpp" />
+    <ClCompile Include="..\..\..\..\Documents\Arduino\libraries\SdFat\utility\FatFileSFN.cpp" />
+    <ClCompile Include="..\..\..\..\Documents\Arduino\libraries\SdFat\utility\FatVolume.cpp" />
+    <ClCompile Include="..\..\..\..\Documents\Arduino\libraries\SdFat\utility\FmtNumber.cpp" />
+    <ClCompile Include="..\..\..\..\Documents\Arduino\libraries\SdFat\utility\fstream.cpp" />
+    <ClCompile Include="..\..\..\..\Documents\Arduino\libraries\SdFat\utility\istream.cpp" />
+    <ClCompile Include="..\..\..\..\Documents\Arduino\libraries\SdFat\utility\ostream.cpp" />
+    <ClCompile Include="..\..\..\..\Documents\Arduino\libraries\SdFat\utility\StdioStream.cpp" />
+    <ClCompile Include="..\..\..\..\Documents\Arduino\libraries\SparkFun_MMA8452Q\SparkFun_MMA8452Q.cpp" />
+    <ClCompile Include="acquireData.cpp" />
     <ClCompile Include="assert.cpp" />
+    <ClCompile Include="sensorDetect.cpp" />
     <ClCompile Include="writeBuffer.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

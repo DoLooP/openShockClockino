@@ -1,3 +1,12 @@
 void sensorDetect();
 
-extern MMA8452Q  accel1, accel2;
+class WriteBuffer;
+typedef void (*SensorAcquireDataCSV)(WriteBuffer *);
+
+struct SensorDef {
+	int tcaChannel;
+	SensorAcquireDataCSV acquireDataCSV;
+};
+
+#define MAXSENSOR 8
+extern SensorDef sensors[MAXSENSOR];

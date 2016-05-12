@@ -118,7 +118,7 @@ void logData() {
     } while(diff > 0);
 
 	// assert(diff >= -10);	// LOG_INTERVAL_USEC big enough
-	acquireData(wb);
+	acquireData(&wb);
   }
   Serial.println(F("Flush..."));
   wb.flush();

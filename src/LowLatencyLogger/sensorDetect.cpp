@@ -22,7 +22,7 @@ void sensorDetect()	// this is adafruit code from https://learn.adafruit.com/ada
 	Serial.println("\nTCAScanner ready!");
 	int sensorIndex = 0;
 
-	for (uint8_t t = 0; t<8; t++) {
+	for (uint8_t t = 0; t<MAXSENSOR; t++) {
 		sensors[sensorIndex].tcaChannel = -1;
 		tca9548a.switchI2C(t);
 		Serial.print("TCA Port #"); Serial.println(t);
@@ -47,5 +47,7 @@ void sensorDetect()	// this is adafruit code from https://learn.adafruit.com/ada
 			}
 		}
 	}
+	if (sensorIndex < MAXSENSOR)
+		sensors[sensorIndex].tcaChannel = -1;
 	Serial.println("\ndone");
 }

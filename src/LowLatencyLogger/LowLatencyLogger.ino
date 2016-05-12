@@ -117,7 +117,7 @@ void logData() {
 		diff = logTime - micros();
     } while(diff > 0);
 
-	// assert(diff >= -10);	// LOG_INTERVAL_USEC big enough
+	//assert(diff >= -10);	// LOG_INTERVAL_USEC big enough
 	acquireData(&wb);
   }
   Serial.println(F("Flush..."));

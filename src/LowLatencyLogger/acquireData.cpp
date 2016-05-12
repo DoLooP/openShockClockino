@@ -58,7 +58,7 @@ void MM8452Q_0x1d_AcquireDataCSV(WriteBuffer *wb)
 	{
 		assert(MM8452Q_0x1d.init());
 		wb->print("MM8452Q_0x1d X;MM8452Q_0x1d Y;MM8452Q_0x1d Z");
-		MM8452Q_0x1c_init = true;
+		MM8452Q_0x1d_init = true;
 		return;
 	}
 	MM8452Q_AcquireDataCSV(MM8452Q_0x1d, wb);

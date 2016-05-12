@@ -1,9 +1,9 @@
 #include "Arduino.h"
 #include <SdFat.h>
 #include "writeBuffer.h"
-#include "assert.h"
+#include "myAssert.h"
 
-//#define DEBUG_WRITEBUFFER
+#define DEBUG_WRITEBUFFER
 #ifdef DEBUG_WRITEBUFFER
 #define DEBUG_WRITEBUFFER_FLUSH
 #define DEBUG_WRITEBUFFER_WRITE
@@ -63,13 +63,13 @@ size_t WriteBuffer::reset()
 size_t WriteBuffer::write(const uint8_t *buffer, size_t l)
 {
 #ifdef DEBUG_WRITEBUFFER_WRITE
-	Serial.print("WriteBuffer::write(");
+	Serial.print("WriteBuffer::writeCSTR(");
 	Serial.print((unsigned long)buffer, HEX);
 	Serial.print(",");
 	Serial.print(l);
 	Serial.print(") ");
 	internalsToSerial();
-	Serial.println("...");
+	Serial.print(" ...");
 	Serial.flush();
 #endif
 	int sizeUsed = p - str;
@@ -87,7 +87,8 @@ size_t WriteBuffer::write(const uint8_t *buffer, size_t l)
 	memcpy(p, buffer, l);
 	p += l;
 #ifdef DEBUG_WRITEBUFFER_WRITE
-	Serial.println("WriteBuffer::write(...) DONE");
+	Serial.println(" DONE");
+	Serial.flush(); 
 #endif
 	return p - str;
 }
@@ -95,18 +96,21 @@ size_t WriteBuffer::write(const uint8_t *buffer, size_t l)
 size_t WriteBuffer::write(uint8_t c)
 {
 #ifdef DEBUG_WRITEBUFFER_WRITE
-	Serial.print("WriteBuffer::write('");
-	Serial.print(c);
-	Serial.print(") ");
+	Serial.print("WriteBuffer::writeCHAR('");
+	Serial.write(c);
+	Serial.print("') ");
 	internalsToSerial();
-	Serial.println(" ...");
+	Serial.print(" ...");
+	Serial.flush();
 #endif
 	if (p - str >= strSize)
 		flush();
 	*p = c;
 	p++;
-	return p - str;
 #ifdef DEBUG_WRITEBUFFER_WRITE
-	Serial.println("WriteBuffer::write(...) DONE");
+	Serial.println(" DONE");
+	Serial.flush();
 #endif
+	return p - str;
+
 }

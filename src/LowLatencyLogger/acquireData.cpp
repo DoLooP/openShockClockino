@@ -10,6 +10,7 @@
 
 MMA8452Q  MM8452Q_0x1c(0x1C), MM8452Q_0x1d(0x1D);	// i2c adress as constructor
 int MM8452Q_0x1c_init = false, MM8452Q_0x1d_init = false;
+size_t acquireLoop, acquireAVG;
 
 //#define DEBUG_ACQUIREDATA
 #ifdef DEBUG_ACQUIREDATA
@@ -17,6 +18,7 @@ int MM8452Q_0x1c_init = false, MM8452Q_0x1d_init = false;
 #endif 
 
 void acquireData(WriteBuffer *wb) {
+	size_t acquireTimer = micros();
 	int i = 0;
 	while (i < 8)
 	{
@@ -42,6 +44,8 @@ void acquireData(WriteBuffer *wb) {
 		i++;
 	}
 	wb->write('\n');
+	acquireAVG += micros() - acquireTimer;
+	acquireLoop++;
 #ifdef DEBUG_ACQUIREDATA
 	Serial.println(" DONE");
 	Serial.flush();

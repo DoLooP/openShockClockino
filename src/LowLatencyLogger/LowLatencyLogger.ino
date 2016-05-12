@@ -50,6 +50,8 @@ void flushCache() {
 
 uint32_t const ERASE_SIZE = 262144L;
 void logData() {
+	acquireLoop = 0; acquireAVG = 0;
+
   uint32_t bgnBlock, endBlock;
   Serial.println();
 

@@ -225,6 +225,9 @@
     <ClInclude Include="sensorDetect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="tca9548a_i2c_multiplexer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="assert.cpp">
@@ -372,6 +375,9 @@
       <Filter>_libraries\SparkFun_MMA8452Q</Filter>
     </ClCompile>
     <ClCompile Include="sensorDetect.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tca9548a_i2c_multiplexer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

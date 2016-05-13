@@ -3,5 +3,7 @@ class WriteBuffer;
 void MM8452Q_0x1c_AcquireDataCSV(WriteBuffer *);
 void MM8452Q_0x1d_AcquireDataCSV(WriteBuffer *);
 void acquireData(WriteBuffer *);
+void resetAcquireMetrics();
+void timerStats();
 
-extern size_t acquireLoop, acquireAVG;
+extern unsigned long acquireLoop, acquireDuration, sensorWaitAVG, syncWaitAVG, flushDurationAVG, flushes, sdBusyWaitAVG, sdWriteAVG, switchTimeAVG;

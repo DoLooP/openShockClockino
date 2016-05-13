@@ -32,17 +32,20 @@ void fatalBlink() {
 uint8_t* cache;
 
 // #define DEBUG_FLUSHCACHE
-
 void flushCache() {
-
+	flushes++;
 #ifdef DEBUG_FLUSHCACHE 
 	Serial.println("Waiting sdcard..."); Serial.flush();
 #endif
+	auto sdBusy = micros();
 	while (sd.card()->isBusy());
+	sdBusyWaitAVG += micros() - sdBusy;
 #ifdef DEBUG_FLUSHCACHE
 	Serial.println("SdCard writeData..."); Serial.flush();
 #endif
+	auto sdWriteTimer = micros();
 	assert(sd.card()->writeData(cache));
+	sdWriteAVG += micros() - sdWriteTimer;
 #ifdef DEBUG_FLUSHCACHE
 	Serial.println("flushCache() DONE"); Serial.flush();
 #endif
@@ -50,8 +53,6 @@ void flushCache() {
 
 uint32_t const ERASE_SIZE = 262144L;
 void logData() {
-	acquireLoop = 0; acquireAVG = 0;
-
   uint32_t bgnBlock, endBlock;
   Serial.println();
 
@@ -108,20 +109,15 @@ void logData() {
   uint32_t logTime = micros()/LOG_INTERVAL_USEC + 1;
   logTime *= LOG_INTERVAL_USEC;
 
+  resetAcquireMetrics();
   while (1) {
-    // Time for next data record.
-    logTime += LOG_INTERVAL_USEC;
-
 	if (Serial.available())
 		break;
-
-    do {
-		diff = logTime - micros();
-    } while(diff > 0);
-
-	//assert(diff >= -10);	// LOG_INTERVAL_USEC big enough
+	// MMA sensor available() method should be enough to sync things
 	acquireData(&wb);
   }
+  acquireDuration = micros() - acquireDuration;
+
   Serial.println(F("Flush..."));
   wb.flush();
   Serial.println(F("Stop..."));
@@ -149,11 +145,11 @@ void setup(void) {
     fatalBlink();
   }
 
-  // TWBR change i2c frequency according to WIRE library documentation
-  TWBR = 12; // #define TWI_FREQ 400000L
-			 // TWBR = 2; // #define TWI_FREQ 800000L
-  sensorDetect();
   
+  sensorDetect();
+  // TWBR change i2c frequency according to WIRE library documentation
+  // TWBR = 2; // #define TWI_FREQ 800000L
+
   Serial.print(F("Init OK"));
 }
 //------------------------------------------------------------------------------
@@ -162,4 +158,5 @@ void loop(void) {
     while (!Serial.available()) {delay(100);}
     Serial.read();
     logData();
+	timerStats();
 }

@@ -181,6 +181,7 @@
       <FileType>CppCode</FileType>
     </ClInclude>
     <ClInclude Include="sensorDetect.h" />
+    <ClInclude Include="tca9548a_i2c_multiplexer.h" />
     <ClInclude Include="writeBuffer.h" />
     <ClInclude Include="__vm\.LowLatencyLogger.vsarduino.h" />
   </ItemGroup>
@@ -233,6 +234,7 @@
     <ClCompile Include="acquireData.cpp" />
     <ClCompile Include="assert.cpp" />
     <ClCompile Include="sensorDetect.cpp" />
+    <ClCompile Include="tca9548a_i2c_multiplexer.cpp" />
     <ClCompile Include="writeBuffer.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

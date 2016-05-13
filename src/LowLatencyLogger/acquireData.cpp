@@ -9,8 +9,40 @@
 #include "sensorDetect.h"
 
 MMA8452Q  MM8452Q_0x1c(0x1C), MM8452Q_0x1d(0x1D);	// i2c adress as constructor
-int MM8452Q_0x1c_init = false, MM8452Q_0x1d_init = false;
-size_t acquireLoop, acquireAVG;
+int MM8452Q_0x1c_init = false, MM8452Q_0x1d_init = false, acquireInit = false;
+unsigned long acquireLoop, acquireDuration, sensorWaitAVG, syncWaitAVG, flushDurationAVG, flushes, sdBusyWaitAVG, switchTimeAVG, sensorLoopAVG, sdWriteAVG, sensorReadAVG;
+
+void timerStats()
+{
+	Serial.println();
+	Serial.print("acquireData()/Line: ");
+	Serial.println(acquireDuration / acquireLoop);
+	Serial.print("us/Loop: ");
+	Serial.println(sensorLoopAVG/acquireLoop);
+	Serial.print("Switch I2c/Line: ");
+	Serial.println(switchTimeAVG / acquireLoop);
+	Serial.print("Sensor Wait/Line: ");
+	Serial.println(sensorWaitAVG / acquireLoop);
+	Serial.print("Sensor Read/Line: ");
+	Serial.println(sensorReadAVG / acquireLoop);
+	Serial.print("Sample/flush: ");
+	Serial.println(acquireLoop / flushes);
+	Serial.print("sdBusyWait/flush: ");
+	Serial.println(sdBusyWaitAVG / flushes);
+	Serial.print("sdWrite/flush: ");
+	Serial.println(sdWriteAVG / flushes);
+	Serial.print("sdBusyWait/Line: ");
+	Serial.println(sdBusyWaitAVG / acquireLoop);
+	Serial.print("sdwrite/Line: ");
+	Serial.println(sdWriteAVG / acquireLoop);
+	Serial.println();
+}
+
+void wireInit()
+{
+	TWBR = 12; // #define TWI_FREQ 400000L
+	//TWBR = 2; // #define TWI_FREQ 800000L
+}
 
 //#define DEBUG_ACQUIREDATA
 #ifdef DEBUG_ACQUIREDATA
@@ -18,10 +50,17 @@ size_t acquireLoop, acquireAVG;
 #endif 
 
 void acquireData(WriteBuffer *wb) {
-	size_t acquireTimer = micros();
+	if (!acquireInit)
+	{
+		wb->print("MicroSeconds");
+		acquireInit = true;
+	}
+	else 
+		wb->print(micros());
 	int i = 0;
 	while (i < 8)
 	{
+		auto sensorLoopTimer = micros();
 #ifdef DEBUG_ACQUIREDATA
 		Serial.print("Sensor #");
 		Serial.print(i);
@@ -37,14 +76,15 @@ void acquireData(WriteBuffer *wb) {
 		Serial.print(") ...");
 		Serial.flush();
 #endif
+		auto switchTimer = micros();
 		tca9548a.switchI2C(tcaChannel);
-		if (i)
-			wb->write(';');
+		switchTimeAVG += micros() - switchTimer;
+		wb->write(';');
 		sensors[i].acquireDataCSV(wb);
 		i++;
+		sensorLoopAVG += micros() - sensorLoopTimer;
 	}
 	wb->write('\n');
-	acquireAVG += micros() - acquireTimer;
 	acquireLoop++;
 #ifdef DEBUG_ACQUIREDATA
 	Serial.println(" DONE");
@@ -58,13 +98,17 @@ void MM8452Q_AcquireDataCSV(MMA8452Q &accel, WriteBuffer *wb)
 	Serial.print("MM8452Q available ...");
 	Serial.flush();
 #endif
+	auto waitingTimer = micros();
 	if (accel.available())
 	{
+		sensorWaitAVG += micros() - waitingTimer;
 #ifdef DEBUG_ACQUIREDATA
 		Serial.print(" read ...");
 		Serial.flush();
 #endif
+		auto sensorReadTimer = micros();
 		accel.read();
+		sensorReadAVG += micros() - sensorReadTimer;
 		wb->print(accel.cx);
 		wb->write(';');
 		wb->print(accel.cy);
@@ -92,6 +136,7 @@ void MM8452Q_0x1c_AcquireDataCSV(WriteBuffer *wb)
 		Serial.println(" DONE");
 		Serial.flush();
 #endif
+		wireInit();
 		return;
 	}
 	MM8452Q_AcquireDataCSV(MM8452Q_0x1c, wb);
@@ -112,7 +157,16 @@ void MM8452Q_0x1d_AcquireDataCSV(WriteBuffer *wb)
 		Serial.println(" DONE");
 		Serial.flush();
 #endif
+		wireInit();
 		return;
 	}
 	MM8452Q_AcquireDataCSV(MM8452Q_0x1d, wb);
+}
+
+void resetAcquireMetrics()
+{
+	acquireLoop = 0; sensorWaitAVG = 0; syncWaitAVG = 0; sdBusyWaitAVG = 0; switchTimeAVG = 0; sdWriteAVG = 0; flushes = 0; sensorReadAVG = 0;
+	acquireDuration = micros();
+	flushDurationAVG = 0;
+	MM8452Q_0x1c_init = false; MM8452Q_0x1d_init = false; acquireInit = false;
 }

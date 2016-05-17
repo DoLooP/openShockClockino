@@ -7,9 +7,22 @@ Multiplexer tca9548a(TCAADDR);
 Multiplexer::Multiplexer(int addr) : addr(addr)
 {}
 
+//#define MULTIPLEXER_DEBUG
 void Multiplexer::switchI2C(int chan)
 {
+	if (lastChannel == chan)
+		return;
+#ifdef MULTIPLEXER_DEBUG
+	Serial.print(F("Switching to lines 0x"));
+	Serial.print(chan,HEX);
+	Serial.print(F(" ..."));
+	Serial.flush();
+#endif
 	Wire.beginTransmission(addr);
-	Wire.write(1 << chan);
+	Wire.write(chan);
 	Wire.endTransmission();
+	lastChannel = chan;
+#ifdef MULTIPLEXER_DEBUG
+	Serial.println(F(" DONE"));
+#endif
 }

@@ -3,7 +3,7 @@
 
 //#define DEBUG_ITOA
 #ifdef  DEBUG_ITOA
-#define DEBUG_ITOA_OUTPUT Serial.print(" ... "); Serial.print(S);
+#define DEBUG_ITOA_OUTPUT Serial.print(F(" ... "); Serial.print(S);
 #else
 #define DEBUG_ITOA_OUTPUT ;
 #endif
@@ -18,9 +18,9 @@
 void ITOA::itoa(short S)
 {
 #ifdef DEBUG_ITOA
-	Serial.print("itoa(short ");
+	Serial.print(F("itoa(short ");
 	Serial.print(S);
-	Serial.print(")");
+	Serial.print(F(")");
 	Serial.flush();
 #endif
 	SIGN(S);
@@ -36,7 +36,7 @@ size2:
 size1:
 	DECA(1);
 #ifdef DEBUG_ITOA
-	Serial.println(" DONE");
+	Serial.println(F(" DONE");
 	Serial.flush();
 #endif
 }
@@ -44,9 +44,9 @@ size1:
 void ITOA::itoa(long S)
 {
 #ifdef DEBUG_ITOA
-	Serial.print("itoa(long ");
+	Serial.print(F("itoa(long ");
 	Serial.print(S);
-	Serial.print(")");
+	Serial.print(F(")");
 	Serial.flush();
 #endif
 	SIGN(S);
@@ -79,7 +79,7 @@ size2:
 size1:
 	DECA(1);
 #ifdef DEBUG_ITOA
-	Serial.println(" DONE");
+	Serial.println(F(" DONE");
 	Serial.flush();
 #endif
 }

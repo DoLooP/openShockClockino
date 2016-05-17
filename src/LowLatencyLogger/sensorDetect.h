@@ -5,6 +5,7 @@ typedef void (*SensorAcquireDataCSV)(WriteBuffer *);
 
 struct SensorDef {
 	int tcaChannel;
+	unsigned char i2cAddr;
 	SensorAcquireDataCSV acquireDataCSV;
 };
 

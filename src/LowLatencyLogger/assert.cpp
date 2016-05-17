@@ -2,7 +2,7 @@
 #include "myAssert.h"
 
 void __assert(const char *__func, const char *__file, int __lineno, const char *__sexp) {
-	Serial.println("Assertion Fail:");
+	Serial.println(F("Assertion Fail:"));
 	Serial.println(__func);
 	Serial.println(__file);
 	Serial.println(__lineno, DEC);

@@ -31,23 +31,23 @@ void fatalBlink() {
 // max number of blocks to erase per erase call
 uint8_t* cache;
 
-// #define DEBUG_FLUSHCACHE
+//#define DEBUG_FLUSHCACHE
 void flushCache() {
 	flushes++;
 #ifdef DEBUG_FLUSHCACHE 
-	Serial.println("Waiting sdcard..."); Serial.flush();
+	Serial.println(F("Waiting sdcard...")); Serial.flush();
 #endif
 	auto sdBusy = micros();
 	while (sd.card()->isBusy());
 	sdBusyWaitAVG += micros() - sdBusy;
 #ifdef DEBUG_FLUSHCACHE
-	Serial.println("SdCard writeData..."); Serial.flush();
+	Serial.println(F("SdCard writeData...")); Serial.flush();
 #endif
 	auto sdWriteTimer = micros();
 	assert(sd.card()->writeData(cache));
 	sdWriteAVG += micros() - sdWriteTimer;
 #ifdef DEBUG_FLUSHCACHE
-	Serial.println("flushCache() DONE"); Serial.flush();
+	Serial.println(F("flushCache() DONE")); Serial.flush();
 #endif
 }
 

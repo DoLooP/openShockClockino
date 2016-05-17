@@ -1,5 +1,7 @@
 #pragma once
-class WriteBuffer : public Print
+#include "ITOA.h"
+
+class WriteBuffer : public Print, public ITOA
 {
 	void internalsToSerial();
 public:

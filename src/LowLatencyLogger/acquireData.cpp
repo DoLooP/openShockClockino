@@ -116,11 +116,11 @@ void MM8452Q_AcquireDataCSV(MMA8452Q &accel, WriteBuffer *wb)
 		accel.read();
 		sensorReadAVG += micros() - sensorReadTimer;
 		auto sensorPrintTimer = micros();
-		wb->print(accel.x);
+		wb->itoa(accel.x);
 		wb->write(';');
-		wb->print(accel.y);
+		wb->itoa(accel.y);
 		wb->write(';');
-		wb->print(accel.z);
+		wb->itoa(accel.z);
 		sensorPrintAVG += micros() - sensorPrintTimer;
 	}
 #ifdef DEBUG_ACQUIREDATA

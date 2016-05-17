@@ -43,15 +43,43 @@ size1:
 
 void ITOA::itoa(long S)
 {
+#ifdef DEBUG_ITOA
+	Serial.print("itoa(long ");
+	Serial.print(S);
+	Serial.print(")");
+	Serial.flush();
+#endif
 	SIGN(S);
+	if (S < 100000)
+	{
+		if (S < 100) { if (S < 10) goto size1; else goto size2; }
+		if (S < 10000) { if (S < 1000) goto size3; else goto size4; }
+		goto size5;
+	} else {
+		if (S < 10000000) { if (S < 1000000) goto size6; else goto size7; }
+		if (S < 1000000000) { if (S < 100000000) goto size8; else goto size9; }
+	}
 	DECA(1000000000);
+size9:
 	DECA(100000000);
+size8:
 	DECA(10000000);
+size7:
 	DECA(1000000);
+size6:
 	DECA(100000);
+size5:
 	DECA(10000);
+size4:
 	DECA(1000);
+size3:
 	DECA(100);
+size2:
 	DECA(10);
+size1:
 	DECA(1);
+#ifdef DEBUG_ITOA
+	Serial.println(" DONE");
+	Serial.flush();
+#endif
 }

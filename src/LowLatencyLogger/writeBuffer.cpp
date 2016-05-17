@@ -3,7 +3,7 @@
 #include "writeBuffer.h"
 #include "myAssert.h"
 
-#define DEBUG_WRITEBUFFER
+//#define DEBUG_WRITEBUFFER
 #ifdef DEBUG_WRITEBUFFER
 //#define DEBUG_WRITEBUFFER_FLUSH
 //#define DEBUG_WRITEBUFFER_RESET

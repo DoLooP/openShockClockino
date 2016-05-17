@@ -137,7 +137,7 @@ void MM8452Q_0x1c_AcquireDataCSV(WriteBuffer *wb)
 		Serial.print("MM8452Q_0x1c.init ...");
 		Serial.flush();
 #endif
-		assert(MM8452Q_0x1c.init());
+		assert(MM8452Q_0x1c.init(SCALE_8G,ODR_400));
 		wb->print("MM8452Q_0x1c X;MM8452Q_0x1c Y;MM8452Q_0x1c Z");
 		MM8452Q_0x1c_init = true;
 #ifdef DEBUG_ACQUIREDATA_INIT
@@ -158,7 +158,7 @@ void MM8452Q_0x1d_AcquireDataCSV(WriteBuffer *wb)
 		Serial.print("MM8452Q_0x1c.init ...");
 		Serial.flush();
 #endif
-		assert(MM8452Q_0x1d.init());
+		assert(MM8452Q_0x1d.init(SCALE_8G, ODR_400));
 		wb->print("MM8452Q_0x1d X;MM8452Q_0x1d Y;MM8452Q_0x1d Z");
 		MM8452Q_0x1d_init = true;
 #ifdef DEBUG_ACQUIREDATA_INIT

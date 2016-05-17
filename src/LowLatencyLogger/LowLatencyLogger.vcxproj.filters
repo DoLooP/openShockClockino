@@ -228,6 +228,9 @@
     <ClInclude Include="tca9548a_i2c_multiplexer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="short2string.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="assert.cpp">
@@ -378,6 +381,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="tca9548a_i2c_multiplexer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="short2string.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

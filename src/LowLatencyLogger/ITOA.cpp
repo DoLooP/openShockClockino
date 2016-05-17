@@ -4,10 +4,10 @@
 #include "myAssert.h"
 
 #define WRITE(A,K) {write('0'+A); S -= (A)*K;}
-#define DUO(A,K) {if (S > (A)*K) WRITE(A+1,K) else WRITE(A,K)}
-#define QUAD(A,K) {if (S > (A+1)*K) DUO(A+2,K) else DUO(A,K)}
-#define OCT(A,K) {if (S > (A+3)*K) QUAD(A+4,K) else QUAD(A,K)}
-#define DECA(K) {if (S >= K) {if (S>8*K) WRITE(9,K) else OCT(1,K)}}
+#define DUO(A,K) {if (S >= (A+1)*K) WRITE(A+1,K) else WRITE(A,K)}
+#define QUAD(A,K) {if (S >= (A+2)*K) DUO(A+2,K) else DUO(A,K)}
+#define OCT(A,K) {if (S >= (A+4)*K) QUAD(A+4,K) else QUAD(A,K)}
+#define DECA(K) {if (S >= K) {if (S >= 9*K) WRITE(9,K) else OCT(1,K)} else WRITE(0,K)} 
 #define SIGN(A) if (A < 0) { write('-'); A = -A; }
 
 #define DEBUG_ITOA

@@ -3,11 +3,12 @@
 #include "writeBuffer.h"
 #include "myAssert.h"
 
-//#define DEBUG_WRITEBUFFER
+#define DEBUG_WRITEBUFFER
 #ifdef DEBUG_WRITEBUFFER
-#define DEBUG_WRITEBUFFER_FLUSH
-#define DEBUG_WRITEBUFFER_WRITE
-#define DEBUG_WRITEBUFFER_RESET
+//#define DEBUG_WRITEBUFFER_FLUSH
+//#define DEBUG_WRITEBUFFER_RESET
+//#define DEBUG_WRITEBUFFER_WRITECSTR
+#define DEBUG_WRITEBUFFER_WRITECHAR
 #endif
 
 WriteBuffer::WriteBuffer(uint8_t *buffer, size_t size, FlushFonctionPtr fp) : str(buffer), strSize(size), flushCallBack(fp)
@@ -62,7 +63,7 @@ size_t WriteBuffer::reset()
 
 size_t WriteBuffer::write(const uint8_t *buffer, size_t l)
 {
-#ifdef DEBUG_WRITEBUFFER_WRITE
+#ifdef DEBUG_WRITEBUFFER_WRITECSTR
 	Serial.print("WriteBuffer::writeCSTR(");
 	Serial.print((unsigned long)buffer, HEX);
 	Serial.print(",");
@@ -86,7 +87,7 @@ size_t WriteBuffer::write(const uint8_t *buffer, size_t l)
 	assert(l<strSize);
 	memcpy(p, buffer, l);
 	p += l;
-#ifdef DEBUG_WRITEBUFFER_WRITE
+#ifdef DEBUG_WRITEBUFFER_WRITECSTR
 	Serial.println(" DONE");
 	Serial.flush(); 
 #endif
@@ -95,7 +96,7 @@ size_t WriteBuffer::write(const uint8_t *buffer, size_t l)
 
 size_t WriteBuffer::write(uint8_t c)
 {
-#ifdef DEBUG_WRITEBUFFER_WRITE
+#ifdef DEBUG_WRITEBUFFER_WRITECHAR
 	Serial.print("WriteBuffer::writeCHAR('");
 	Serial.write(c);
 	Serial.print("') ");
@@ -107,7 +108,7 @@ size_t WriteBuffer::write(uint8_t c)
 		flush();
 	*p = c;
 	p++;
-#ifdef DEBUG_WRITEBUFFER_WRITE
+#ifdef DEBUG_WRITEBUFFER_WRITECHAR
 	Serial.println(" DONE");
 	Serial.flush();
 #endif

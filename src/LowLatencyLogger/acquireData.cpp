@@ -62,7 +62,7 @@ void acquireData(WriteBuffer *wb) {
 		acquireInit = true;
 	}
 	else 
-		wb->print(micros());
+		wb->itoa(micros());
 	int i = 0;
 	while (i < 8)
 	{
@@ -173,7 +173,7 @@ void MM8452Q_0x1d_AcquireDataCSV(WriteBuffer *wb)
 
 void resetAcquireMetrics()
 {
-	acquireLoop = 0; sensorWaitAVG = 0; syncWaitAVG = 0; sdBusyWaitAVG = 0; switchTimeAVG = 0; sdWriteAVG = 0; flushes = 0; sensorReadAVG = 0; acquireDataAVG = 0; sensorPrintAVG = 0;
+	acquireLoop = 0; sensorWaitAVG = 0; syncWaitAVG = 0; sdBusyWaitAVG = 0; switchTimeAVG = 0; sdWriteAVG = 0; flushes = 0; sensorReadAVG = 0; acquireDataAVG = 0; sensorPrintAVG = 0; sensorLoopAVG = 0;
 	acquireDuration = micros();
 	flushDurationAVG = 0;
 	MM8452Q_0x1c_init = false; MM8452Q_0x1d_init = false; acquireInit = false;

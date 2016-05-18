@@ -1,6 +1,7 @@
 /*
 	HACKED through SdFat LowLatencyLogger exemple
 */
+#include "Arduino.h"
 #include <Wire.h>
 #include <SparkFun_MMA8452Q.h>
 #include <SPI.h>
@@ -110,19 +111,28 @@ void logData() {
   logTime *= LOG_INTERVAL_USEC;
 
   resetAcquireMetrics();
+  unsigned long lastAcquireTick;
   while (1) {
 	if (Serial.available())
 		break;
-	// MMA sensor available() method should be enough to sync things
+
+	auto tick = micros();
+	syncWaitAVG -= tick;
+	delayMicroseconds(LOG_INTERVAL_USEC - (tick - lastAcquireTick));
+	lastAcquireTick = micros();
+	syncWaitAVG += lastAcquireTick;
 	acquireData(&wb);
   }
-  acquireDuration = micros() - acquireDuration;
+  acquireDuration += micros();
+  sdTotalWrite = wb.totalWriten;
 
   Serial.println(F("Flush..."));
   wb.flush();
   Serial.println(F("Stop..."));
   assert(sd.card()->writeStop());
-  Serial.println(F("Truncate..."));
+  Serial.print(F("Truncate to "));
+  Serial.print(wb.totalWriten >> 10);
+  Serial.print("Ko ...");
   assert(binFile.truncate(wb.totalWriten));
   wb.totalWriten = 0;
   Serial.println(F("Rename..."));

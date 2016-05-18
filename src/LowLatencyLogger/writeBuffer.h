@@ -1,11 +1,10 @@
-#pragma once
 #include "ITOA.h"
 
 class WriteBuffer : public Print, public ITOA
 {
 	void internalsToSerial();
 public:
-	size_t totalWriten = 0;
+	unsigned long totalWriten = 0;
 	typedef void (*FlushFonctionPtr)();
 	FlushFonctionPtr flushCallBack;
 	uint8_t * const str;

@@ -6,4 +6,4 @@ void acquireData(WriteBuffer *);
 void resetAcquireMetrics();
 void timerStats();
 
-extern unsigned long acquireLoop, acquireDuration, sensorWaitAVG, syncWaitAVG, flushDurationAVG, flushes, sdBusyWaitAVG, sdWriteAVG, switchTimeAVG;
+extern unsigned long acquireLoop, acquireDuration, sdTotalWrite, syncWaitAVG, flushDurationAVG, flushes, sdBusyWaitAVG, sdWriteAVG, switchTimeAVG;

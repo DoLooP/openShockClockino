@@ -74,6 +74,7 @@ void sensorDetect()	// this is adafruit code from https://learn.adafruit.com/ada
 				// choose right driver
 				if (addr == 0x1c) sensors[sensorIndex].acquireDataCSV = MM8452Q_0x1c_AcquireDataCSV;
 				else if (addr == 0x1d) sensors[sensorIndex].acquireDataCSV = MM8452Q_0x1d_AcquireDataCSV;
+				else sensors[sensorIndex].tcaChannel = TCA_INVALID;
 
 				if (sensors[sensorIndex].tcaChannel != TCA_INVALID) {
 					sensorIndex++;

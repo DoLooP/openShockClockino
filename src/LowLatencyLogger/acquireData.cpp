@@ -107,24 +107,22 @@ void MM8452Q_AcquireDataCSV(MMA8452Q &accel, WriteBuffer *wb)
 	Serial.flush();
 #endif
 	auto waitingTimer = micros();
-	if (accel.available())
-	{
-		sensorWaitAVG += micros() - waitingTimer;
+	while (!accel.available());
+	sensorWaitAVG += micros() - waitingTimer;
 #ifdef DEBUG_ACQUIREDATA
-		Serial.print(F(" read ..."));
-		Serial.flush();
+	Serial.print(F(" read ..."));
+	Serial.flush();
 #endif
-		auto sensorReadTimer = micros();
-		accel.read();
-		sensorReadAVG += micros() - sensorReadTimer;
-		auto sensorPrintTimer = micros();
-		wb->itoa(accel.x);
-		wb->write(';');
-		wb->itoa(accel.y);
-		wb->write(';');
-		wb->itoa(accel.z);
-		sensorPrintAVG += micros() - sensorPrintTimer;
-	}
+	auto sensorReadTimer = micros();
+	accel.read();
+	sensorReadAVG += micros() - sensorReadTimer;
+	auto sensorPrintTimer = micros();
+	wb->itoa(accel.x);
+	wb->write(';');
+	wb->itoa(accel.y);
+	wb->write(';');
+	wb->itoa(accel.z);
+	sensorPrintAVG += micros() - sensorPrintTimer;
 #ifdef DEBUG_ACQUIREDATA
 	Serial.println(F(" DONE"));
 	Serial.flush();

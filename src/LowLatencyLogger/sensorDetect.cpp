@@ -18,10 +18,10 @@ int sensorConflict(SensorDef *sensor)
 	{
 		if (sensors[t].i2cAddr == sensor->i2cAddr && (sensors + t) != sensor)
 		{
-			Serial.print(F("Sensor "));
+			Serial.print(F("Sensor 0x"));
 			Serial.print(sensor->i2cAddr, HEX);
-			Serial.print(F(" conflicts with channel "));
-			Serial.println(sensors[t].tcaChannel);
+			Serial.print(F(" conflicts with channel 0x"));
+			Serial.println(sensors[t].tcaChannel, HEX);
 			return 1;
 		}
 	}
@@ -74,7 +74,8 @@ void sensorDetect()	// this is adafruit code from https://learn.adafruit.com/ada
 				// choose right driver
 				if (addr == 0x1c) sensors[sensorIndex].acquireDataCSV = MM8452Q_0x1c_AcquireDataCSV;
 				else if (addr == 0x1d) sensors[sensorIndex].acquireDataCSV = MM8452Q_0x1d_AcquireDataCSV;
-				else if (addr == 0x32) sensors[sensorIndex].acquireDataCSV = LSM303_AcquireData;
+				else if (addr == 0x19) sensors[sensorIndex].acquireDataCSV = LSM303Accel_AcquireData;
+				else if (addr == 0x1e) sensors[sensorIndex].acquireDataCSV = LSM303Mag_AcquireData;
 				else sensors[sensorIndex].tcaChannel = TCA_INVALID;
 
 				if (sensors[sensorIndex].tcaChannel != TCA_INVALID) {

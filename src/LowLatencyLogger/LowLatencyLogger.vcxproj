@@ -93,7 +93,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino;C:\Program Files (x86)\Arduino\hardware\arduino\avr\variants\standard;C:\Users\DoLooP\src\openShockClockino\src\LowLatencyLogger;C:\Users\DoLooP\Documents\Arduino\libraries\SdFat;C:\Users\DoLooP\Documents\Arduino\libraries\SdFat\utility;C:\Users\DoLooP\Documents\Arduino\libraries\SparkFun_MMA8452Q;C:\Users\DoLooP\Documents\Arduino\libraries\SparkFun_MMA8452Q\utility;C:\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\SPI\src;C:\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\SPI\src\utility;C:\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\Wire\src;C:\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\Wire\src\utility;C:\Program Files (x86)\Arduino\libraries;C:\Program Files (x86)\Arduino\hardware\arduino\avr\libraries;C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\Extensions\t2fwo4xs.twd\Micro Platforms\default\debuggers;C:\Users\DoLooP\Documents\Arduino\libraries;C:\Program Files (x86)\Arduino\hardware\tools\avr/avr/include/;C:\Program Files (x86)\Arduino\hardware\tools\avr//avr/include/avr/;C:\Program Files (x86)\Arduino\hardware\tools\avr/lib\gcc\avr\4.8.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino;C:\Program Files (x86)\Arduino\hardware\arduino\avr\variants\standard;C:\Users\DoLooP\src\openShockClockino\src\LowLatencyLogger;C:\Users\DoLooP\Documents\Arduino\libraries\Adafruit_LSM303;C:\Users\DoLooP\Documents\Arduino\libraries\Adafruit_LSM303\utility;C:\Users\DoLooP\Documents\Arduino\libraries\SdFat;C:\Users\DoLooP\Documents\Arduino\libraries\SdFat\utility;C:\Users\DoLooP\Documents\Arduino\libraries\SparkFun_MMA8452Q;C:\Users\DoLooP\Documents\Arduino\libraries\SparkFun_MMA8452Q\utility;C:\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\SPI\src;C:\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\SPI\src\utility;C:\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\Wire\src;C:\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\Wire\src\utility;C:\Program Files (x86)\Arduino\libraries;C:\Program Files (x86)\Arduino\hardware\arduino\avr\libraries;C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\Extensions\t2fwo4xs.twd\Micro Platforms\default\debuggers;C:\Users\DoLooP\Documents\Arduino\libraries;C:\Program Files (x86)\Arduino\hardware\tools\avr/avr/include/;C:\Program Files (x86)\Arduino\hardware\tools\avr//avr/include/avr/;C:\Program Files (x86)\Arduino\hardware\tools\avr/lib\gcc\avr\4.8.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>C:\Users\DoLooP\src\openShockClockino\src\LowLatencyLogger\__vm\.LowLatencyLogger.vsarduino.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <PreprocessorDefinitions>__AVR_ATmega328p__;__AVR_ATmega328P__;F_CPU=16000000L;ARDUINO=10608;ARDUINO_AVR_UNO;ARDUINO_ARCH_AVR;__cplusplus=201103L;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -146,6 +146,7 @@
     <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\Wire\src\utility\twi.h" />
     <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\Wire\src\Wire.h" />
     <ClInclude Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\variants\standard\pins_arduino.h" />
+    <ClInclude Include="..\..\..\..\Documents\Arduino\libraries\Adafruit_LSM303\Adafruit_LSM303.h" />
     <ClInclude Include="..\..\..\..\Documents\Arduino\libraries\SdFat\MinimumSerial.h" />
     <ClInclude Include="..\..\..\..\Documents\Arduino\libraries\SdFat\SdFat.h" />
     <ClInclude Include="..\..\..\..\Documents\Arduino\libraries\SdFat\SdFatConfig.h" />
@@ -176,6 +177,8 @@
     <ClInclude Include="..\..\..\..\Documents\Arduino\libraries\SdFat\utility\StdioStream.h" />
     <ClInclude Include="..\..\..\..\Documents\Arduino\libraries\SparkFun_MMA8452Q\SparkFun_MMA8452Q.h" />
     <ClInclude Include="acquireData.h" />
+    <ClInclude Include="acquireLSM.h" />
+    <ClInclude Include="acquireMMA.h" />
     <ClInclude Include="myAssert.h" />
     <ClInclude Include="LLLconstant.h">
       <FileType>CppCode</FileType>
@@ -214,6 +217,7 @@
     <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\SPI\src\SPI.cpp" />
     <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\Wire\src\utility\twi.c" />
     <ClCompile Include="..\..\..\..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\Wire\src\Wire.cpp" />
+    <ClCompile Include="..\..\..\..\Documents\Arduino\libraries\Adafruit_LSM303\Adafruit_LSM303.cpp" />
     <ClCompile Include="..\..\..\..\Documents\Arduino\libraries\SdFat\MinimumSerial.cpp" />
     <ClCompile Include="..\..\..\..\Documents\Arduino\libraries\SdFat\SdFatBase.cpp" />
     <ClCompile Include="..\..\..\..\Documents\Arduino\libraries\SdFat\SdFatUtil.cpp" />
@@ -233,6 +237,8 @@
     <ClCompile Include="..\..\..\..\Documents\Arduino\libraries\SdFat\utility\StdioStream.cpp" />
     <ClCompile Include="..\..\..\..\Documents\Arduino\libraries\SparkFun_MMA8452Q\SparkFun_MMA8452Q.cpp" />
     <ClCompile Include="acquireData.cpp" />
+    <ClCompile Include="acquireLSM.cpp" />
+    <ClCompile Include="acquireMMA.cpp" />
     <ClCompile Include="assert.cpp" />
     <ClCompile Include="sensorDetect.cpp" />
     <ClCompile Include="ITOA.cpp" />

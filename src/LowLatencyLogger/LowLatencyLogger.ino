@@ -3,6 +3,8 @@
 */
 #include "Arduino.h"
 #include <Wire.h>
+#include <SparkFun_MMA8452Q.h>
+#include <Adafruit_LSM303.h>
 #include <SPI.h>
 #include <SdFat.h>
 #include <SdFatUtil.h>
@@ -117,7 +119,9 @@ void logData() {
 
 	auto tick = micros();
 	syncWaitAVG -= tick;
-	delayMicroseconds(LOG_INTERVAL_USEC - (tick - lastAcquireTick));
+	long toWait = LOG_INTERVAL_USEC - (tick - lastAcquireTick);
+	if (toWait > 0)
+		delayMicroseconds(toWait);
 	lastAcquireTick = micros();
 	syncWaitAVG += lastAcquireTick;
 	acquireData(&wb);

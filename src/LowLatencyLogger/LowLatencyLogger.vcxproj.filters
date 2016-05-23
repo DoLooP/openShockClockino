@@ -43,6 +43,9 @@
     <Filter Include="_libraries\SparkFun_MMA8452Q">
       <UniqueIdentifier>{b763e4fe-3e9b-40a0-a652-a8aeee90a51b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="_libraries\Adafruit_LSM303">
+      <UniqueIdentifier>{0654a47b-f44e-4644-b4b4-51008b9623ad}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="LowLatencyLogger.ino" />
@@ -231,6 +234,15 @@
     <ClInclude Include="ITOA.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\Documents\Arduino\libraries\Adafruit_LSM303\Adafruit_LSM303.h">
+      <Filter>_libraries\Adafruit_LSM303</Filter>
+    </ClInclude>
+    <ClInclude Include="acquireMMA.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="acquireLSM.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="assert.cpp">
@@ -384,6 +396,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ITOA.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Documents\Arduino\libraries\Adafruit_LSM303\Adafruit_LSM303.cpp">
+      <Filter>_libraries\Adafruit_LSM303</Filter>
+    </ClCompile>
+    <ClCompile Include="acquireMMA.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="acquireLSM.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

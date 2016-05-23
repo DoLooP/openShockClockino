@@ -93,6 +93,8 @@ void acquireData(WriteBuffer *wb) {
 		sensorLoopAVG += tick;
 	}
 	wb->write('\n');
+	if (acquireLoop == 0)
+		wireInit();
 	acquireLoop++;
 #ifdef DEBUG_ACQUIREDATA_OUTPUT
 	Serial.println(F(" DONE");

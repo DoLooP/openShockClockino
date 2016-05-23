@@ -16,7 +16,6 @@ void MM8452Q_AcquireDataCSV(MMA8452Q &accel, WriteBuffer *wb)
 		Serial.println(F(" DONE");
 		Serial.flush();
 #endif
-		wireInit();
 		return;
 	}
 

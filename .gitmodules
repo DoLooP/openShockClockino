@@ -19,3 +19,6 @@
 [submodule "dependencies/MMA8452_Accelerometer"]
 	path = dependencies/MMA8452_Accelerometer
 	url = https://github.com/sparkfun/MMA8452_Accelerometer.git
+[submodule "dependencies/Adafruit_LSM303"]
+	path = dependencies/Adafruit_LSM303
+	url = https://github.com/adafruit/Adafruit_LSM303.git

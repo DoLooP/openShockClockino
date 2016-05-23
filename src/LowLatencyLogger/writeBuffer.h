@@ -1,3 +1,4 @@
+#pragma once
 #include "ITOA.h"
 
 class WriteBuffer : public Print, public ITOA

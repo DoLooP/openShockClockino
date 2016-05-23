@@ -3,7 +3,6 @@
 */
 #include "Arduino.h"
 #include <Wire.h>
-#include <SparkFun_MMA8452Q.h>
 #include <SPI.h>
 #include <SdFat.h>
 #include <SdFatUtil.h>

@@ -66,24 +66,21 @@ void acquireData(WriteBuffer *wb) {
 		if (tcaChannel == TCA_INVALID)
 			break;
 
-		auto tick = micros();
-		sensorLoopAVG -= tick;
 #ifdef DEBUG_ACQUIREDATA_OUTPUT
 		Serial.print(F("Sensor #"));
 		Serial.print(i);
+		Serial.print(F(" Channel 0x"));
+		Serial.print(tcaChannel,HEX);
 		Serial.print(F(" ..."));
 		Serial.flush();
 #endif
+		auto tick = micros();
+		sensorLoopAVG -= tick;
 		switchTimeAVG -= tick;
-#ifdef DEBUG_ACQUIREDATA_OUTPUT
-		Serial.print(F(" SwitchI2c("));
-		Serial.print(tcaChannel);
-		Serial.print(F(") ..."));
-		Serial.flush();
-#endif
 		tca9548a.switchI2C(tcaChannel);
 		tick = micros();
 		switchTimeAVG += tick;
+
 		acquireDataAVG -= tick;
 		wb->write(';');
 		sensors[i].acquireDataCSV(wb);

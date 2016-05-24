@@ -14,9 +14,9 @@ SensorDef sensors[MAXSENSOR];
 
 int sensorConflict(SensorDef *sensor)
 {
-	for (uint8_t t = 0; t < MAXSENSOR && sensors[t].tcaChannel != TCA_INVALID; t++)
+	for (uint8_t t = 0; t < MAXSENSOR && sensors[t].tcaChannel != TCA_INVALID && sensor != sensors+t; t++)
 	{
-		if (sensors[t].i2cAddr == sensor->i2cAddr && (sensors + t) != sensor)
+		if (sensors[t].i2cAddr == sensor->i2cAddr)
 		{
 			Serial.print(F("Sensor 0x"));
 			Serial.print(sensor->i2cAddr, HEX);
@@ -30,20 +30,20 @@ int sensorConflict(SensorDef *sensor)
 
 void sensorOptimizeI2C()
 {
-	int tcaChannelGroup = 0;
+	int tcaMainChannel = 0;
 	for (uint8_t t = 0; t < MAXSENSOR && sensors[t].tcaChannel != TCA_INVALID; t++) {
 		if (!sensorConflict(sensors + t))
 		{
 			Serial.print(F("Sensor "));
 			Serial.print(sensors[t].i2cAddr, HEX);
 			Serial.print(F(" added to I2c group channel: 0x"));
-			tcaChannelGroup |= sensors[t].tcaChannel;
-			Serial.println(tcaChannelGroup,HEX);
+			tcaMainChannel |= sensors[t].tcaChannel;
+			Serial.println(tcaMainChannel,HEX);
 		}
 	}
 	for (uint8_t t = 0; t < MAXSENSOR && sensors[t].tcaChannel != TCA_INVALID; t++) {
-		if ((sensors[t].tcaChannel & tcaChannelGroup) == sensors[t].tcaChannel)
-			sensors[t].tcaChannel = tcaChannelGroup;
+		if ((sensors[t].tcaChannel & tcaMainChannel) == sensors[t].tcaChannel)
+			sensors[t].tcaChannel = tcaMainChannel;
 	}
 }
 
